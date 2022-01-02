@@ -1,0 +1,33 @@
+.register_user_wrapper{
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 2px 2px 5px blue;
+    padding-bottom: 20px;
+    margin-top: 0
+}
+
+.step_style{
+    margin: 100px auto 0px auto;
+}
+
+.MuiStepConnector-line{
+    display: none !important
+}
+
+.MuiStepConnector-root{
+    height: 1px;
+    background-color: rgba(0,0,0,349)
+}
+
+.MuiStepConnector-active,.MuiStepConnector-completed{
+    background-color: blue
+}
+
+@media screen and (max-width:600px){
+    .step_style{
+        margin: 150px auto 0px auto;
+    }
+}

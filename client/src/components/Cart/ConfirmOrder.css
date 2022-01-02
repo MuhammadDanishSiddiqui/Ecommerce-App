@@ -1,0 +1,107 @@
+.confirmOrderPage{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+    box-sizing: border-box;
+    padding:20px;
+}
+
+.confirmOrderPage > :first-child{
+    flex-grow: 1;
+    border-right: 1px solid black
+}
+
+.confirmOrderPage > :last-child{
+    padding-left: 130px;
+    align-self: flex-start;
+ 
+}
+
+
+.confirmShippingAreaBox{
+    margin-left: 20px;
+    margin-top: 20px
+}
+.confirmShippingAreaBox > div {
+    display: flex;
+    margin-bottom: 10px
+
+}
+.confirmShippingAreaBox > div > p {
+    margin-right: 20px
+}
+
+.confirmShippingArea{
+    margin-bottom: 20px
+}
+.confirmCartItemsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width:100%; 
+    margin-top: 20px
+}
+.confirmCartItemsContainer > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-right: 20px
+}
+
+.confirmCartItemsContainer > div > img{
+    width:100px
+}
+
+.orderSummaryTotal{
+    display: flex
+}
+
+.proceed_btn{
+    padding:10px 20px;
+    margin-top: 10px;
+    background-color: green;
+    color:white;
+    border:1px solid green;
+    outline: none;
+    cursor: pointer;
+
+}
+
+@media screen and (max-width:720px){
+    .confirmOrderPage > :last-child{
+        padding-left: 60px
+    }   
+}
+
+@media screen and (max-width:600px){
+    .confirmOrderPage > :first-child{
+        flex-grow: 1;
+        border-right: 0;
+        border-bottom: 1px solid black;
+        width: 100%
+    }
+    .confirmOrderPage{ 
+
+        flex-direction: column
+    }  
+    .confirmOrderPage > :last-child{
+        padding-left: 0;
+        margin-top: 20px;
+        width:300px;
+
+    }
+    .confirmCartItemsContainer > div {
+   
+        margin-bottom: 10px;
+        flex-direction: column;
+   
+        height: 150px
+    }
+    .confirmCartItemsContainer > div > img {
+        width: 140px
+    }
+}

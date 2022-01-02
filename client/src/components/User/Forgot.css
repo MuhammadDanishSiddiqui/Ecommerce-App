@@ -1,0 +1,15 @@
+.register_user_wrapper{
+    margin: 100px auto 30px auto;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 2px 2px 5px blue;
+    padding-bottom: 20px;
+}
+
+@media screen and (max-width:600px){
+    .register_user_wrapper{
+        margin-top: 180px }
+}
