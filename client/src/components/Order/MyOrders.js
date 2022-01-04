@@ -11,8 +11,21 @@ import { Link } from "react-router-dom"
 function MyOrders() {
     const dispatch = useDispatch()
     const { loading, error, orders } = useSelector(state => state.myOrders)
-
     const { user, isAuth } = useSelector(state => state.user)
+
+    useEffect(() => {
+        if (error) {
+            alert(error)
+            console.log(error)
+            dispatch(clearErrors())
+        }
+        if (isAuth)
+            dispatch(myOrders())
+
+
+    }, [dispatch, error, alert, isAuth])
+
+
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
         {
@@ -44,20 +57,11 @@ function MyOrders() {
         })
     })
 
-    useEffect(() => {
-        if (error) {
-            alert(error)
-            dispatch(clearErrors())
-        }
 
-        dispatch(myOrders())
-
-
-    }, [dispatch, error, alert])
     return (
         <>
             {
-                loading && !user ?
+                loading || isAuth == false ?
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh", width: "100%" }}>
                         <CircularProgress />
                     </div>

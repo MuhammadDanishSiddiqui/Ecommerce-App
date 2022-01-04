@@ -9,6 +9,10 @@
     padding-bottom: 20px;
 }
 
+.extra{
+    margin-top: 90px
+}
+
 @media screen and (max-width:600px){
     .register_user_wrapper{
         margin-top: 180px }
