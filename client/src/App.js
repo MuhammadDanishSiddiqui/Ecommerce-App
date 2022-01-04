@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Home from "./components/Home/Home"
 import ProductDetails from "./components/product/ProductDetails"
 import Products from "./components/Products/Products"
@@ -16,6 +16,11 @@ import { useSelector, useDispatch } from "react-redux"
 import ChangePassword from "./components/User/ChangePassword"
 import Shipping from "./components/Cart/Shipping.js"
 import ConfirmOrder from "./components/Cart/ConfirmOrder.js"
+import Payment from "./components/Cart/Payment.js"
+import OrderSuccess from "./components/Cart/OrderSuccess.js"
+import MyOrders from "./components/Order/MyOrders.js"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
 
 import {
@@ -36,10 +41,16 @@ import ProtectedRoute from "./components/ProctedRoute"
 
 
 function App() {
+  const [stripeApiKey, setStripeApiKEy] = useState("")
   let location = useLocation();
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { isAuth, loading } = useSelector(state => state.user)
+
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/stripeapikey")
+    setStripeApiKEy(data.stripeApiKey)
+  }
 
   useEffect(() => {
     localStorage.setItem("currentPath", location.pathname)
@@ -55,6 +66,7 @@ function App() {
 
 
       dispatch(getUserProfile())
+      getStripeApiKey()
 
 
 
@@ -114,6 +126,40 @@ function App() {
           }
         />
 
+
+        <Route
+          path="/success"
+          element={
+            <ProtectedRoute redirectTo="/login">
+              <OrderSuccess />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute redirectTo="/login">
+              <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+
+
+
+        {
+          stripeApiKey && <Route
+            path="/process/payment"
+            element={
+              <Elements stripe={loadStripe(stripeApiKey)}>
+                <ProtectedRoute redirectTo="/login">
+                  <Payment />
+                </ProtectedRoute>
+              </Elements>
+
+            }
+          />
+        }
 
 
 

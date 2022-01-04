@@ -15,6 +15,7 @@ cloudinary.config({
 const userRouter = require("./routes/user")
 const productRouter = require("./routes/product")
 const orderRouter = require("./routes/order")
+const paymentRouter = require("./routes/payment")
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -25,6 +26,7 @@ app.use(fileupload())
 app.use("/api", userRouter)
 app.use("/api", productRouter)
 app.use("/api", orderRouter)
+app.use("/api", paymentRouter)
 
 app.listen(port, () => {
     console.log("server is up at port " + port)

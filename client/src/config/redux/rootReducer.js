@@ -1,6 +1,7 @@
 import { combineReducers } from "redux"
 import { productReducer, productDetailReducer } from "./reducers/productReducer"
 import { registerReducer, loginReducer, profileReducer } from "./reducers/userReducer"
+import { newOrderReducer, myOrdersReducer } from "./reducers/orderReducer"
 import { cartReducer } from "./reducers/cartReducer"
 
 const appReducer = combineReducers({
@@ -9,7 +10,9 @@ const appReducer = combineReducers({
     userRegister: registerReducer,
     userLogin: loginReducer,
     user: profileReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    newOrder: newOrderReducer,
+    myOrders: myOrdersReducer
 })
 
 const rootReducer = (state, action) => {
