@@ -4,13 +4,37 @@ const Product = require("../models/product")
 const auth = require("../middleware/auth")
 const authRoles = require("../middleware/authRoles")
 const ApiFeatures = require("../utils/apiFeature")
+const cloudinary = require("cloudinary")
 
 
 
 
 router.post("/admin/product", auth, authRoles, async (req, res) => {
+    let images = []
+    if (typeof req.body.images == "string") {
+        images.push(req.body.images)
+    }
+    else {
+        images = req.body.images
+    }
+
+    const imagesLink = []
+
+    for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.v2.uploader.upload(images[i], {
+            folder: "products"
+        })
+        imagesLink.push({
+            public_id: result.public_id,
+            url: result.secure_url
+        })
+
+    }
+
+    req.body.images = imagesLink
+
     try {
-        const product = new Product({ ...req.body, images: [{ public_id: "fake id", url: "fake url" }, { public_id: "fake id", url: "fake url" }], user: req.user._id })
+        const product = new Product({ ...req.body, user: req.user._id })
         await product.save()
         res.status(201).send({ message: "Product added successfully", product })
     } catch (error) {
@@ -85,6 +109,18 @@ router.get("/products", async (req, res) => {
     }
 })
 
+router.get("/admin/products", auth, authRoles, async (req, res) => {
+    try {
+        const products = await Product.find()
+        res.send({
+            products
+        })
+
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
 router.get("/reviews", async (req, res) => {
     const product = await Product.findById(req.query.id)
     if (!product) {
@@ -103,24 +139,24 @@ router.patch("/review", auth, async (req, res) => {
         comment
     }
     const product = await Product.findById(productId)
-    const isReviewed = product.reviews.find(rev => rev.user.toString() == req.user._id.toString())
+    const isReviewed = product ?.reviews ?.find(rev => rev ?.user ?.toString() == req ?.user ?._id.toString())
     if (isReviewed) {
-        product.reviews.forEach(rev => {
-            if (rev.user.toString() == req.user._id.toString()) {
+        product ?.reviews ?.forEach(rev => {
+            if (rev ?.user ?.toString() == req.user._id.toString()) {
                 rev.rating = rating
                 rev.comment = comment
             }
         })
     }
     else {
-        product.reviews.push(review)
+        product ?.reviews ?.push(review)
         product.numOfReviews = product.reviews.length
     }
     let avg = 0
-    product.reviews.forEach(rev => {
+    product ?.reviews ?.forEach(rev => {
         avg += rev.rating
     })
-    product.ratings = avg / product.reviews.length
+    product.ratings = avg / product ?.reviews ?.length
     await product.save()
     res.send({ message: "Review added successfully", product })
 })
@@ -130,7 +166,7 @@ router.delete("/review", auth, async (req, res) => {
     if (!product) {
         return res.status(404).send({ error: "Product not found." })
     }
-    const reviews = product.reviews.filter(rev => rev._id.toString() !== req.query.id.toString())
+    const reviews = product ?.reviews ?.filter(rev => rev._id.toString() !== req.query.id.toString())
     let avg = 0
     reviews.forEach(rev => {
         avg += rev.rating

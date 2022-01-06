@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const createOrder = (order) => async (dispatch, getState) => {
+const createOrder = (order) => async (dispatch) => {
     try {
         dispatch({ type: "CREATE_ORDER_REQUEST" })
         const config = {
@@ -17,7 +17,7 @@ const createOrder = (order) => async (dispatch, getState) => {
     }
 }
 
-const myOrders = () => async (dispatch, getState) => {
+const myOrders = () => async (dispatch) => {
     try {
         dispatch({ type: "MY_ORDERS_REQUEST" })
         const { data } = await axios.get("/api/orders/me")
@@ -29,8 +29,20 @@ const myOrders = () => async (dispatch, getState) => {
     }
 }
 
+const getOrderDetails = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: "ORDER_DETAILS_REQUEST" })
+        const { data } = await axios.get(`/api/order/${id}`)
+        dispatch({ type: "ORDER_DETAILS_SUCCESS", payload: data.order })
+
+
+    } catch (error) {
+        dispatch({ type: "ORDER_DETAILS_FAIL", payload: error.response.data.message })
+    }
+}
+
 const clearErrors = () => async (dispatch) => {
     dispatch({ type: "CLEAR_ERRORS" })
 }
 
-export { createOrder, clearErrors, myOrders }
+export { createOrder, clearErrors, myOrders, getOrderDetails }

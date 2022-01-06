@@ -12,7 +12,8 @@ import Pagination from "react-js-pagination"
 import Slider from "@material-ui/core/Slider"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from '@material-ui/core/styles';
-import ReactStars from "react-rating-stars-component"
+// import ReactStars from "react-rating-stars-component"
+import { Rating } from "@material-ui/lab"
 
 const useStyles = makeStyles(theme => ({
     test: {
@@ -42,13 +43,17 @@ function Products() {
     }, [dispatch, error, keyword, currentPage, price, category, ratings])
 
     let count = filteredProductsCount
+    // const options = {
+    //     edit: true,
+    //     color: "black",
+    //     activeColor: "yellow",
+    //     size: 25,
+    //     value: ratings,
+    //     isHalf: true
+    // }
     const options = {
-        edit: true,
-        color: "black",
-        activeColor: "yellow",
-        size: 25,
         value: ratings,
-        isHalf: true
+        precision: 0.5
     }
 
     return (
@@ -88,7 +93,8 @@ function Products() {
                         min={0}
                         max={5}
                     /> */}
-                    <ReactStars {...options} onChange={e => setRatings(e)} />
+                    {/* <ReactStars {...options} onChange={e => setRatings(e)} /> */}
+                    <Rating {...options} onChange={e => setRatings(Number(e.target.value))} />
                 </div>
 
             </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import {
     Link
 } from "react-router-dom";
-import ReactStars from "react-rating-stars-component"
+// import ReactStars from "react-rating-stars-component"
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -12,6 +12,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { Rating } from "@material-ui/lab"
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,13 +32,12 @@ const useStyles = makeStyles(theme => ({
 function Product({ product }) {
 
     const options = {
-        edit: false,
-        color: "black",
-        activeColor: "yellow",
-        size: 20,
         value: product.ratings,
-        isHalf: true
+        readOnly: true,
+        precision: 0.5
     }
+
+
     const classes = useStyles();
     return (
         <Grid component={Link} to={`/product/${product._id}`} className={`${classes.root}`} style={{ marginBottom: "20px", textDecoration: "none", color: "black" }}>
@@ -47,14 +47,16 @@ function Product({ product }) {
                     title={product.name}
                     alt={product.name}
                     component="img"
-                    minheight="170"
+                    height="170"
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         {product.name}
                     </Typography>
                     <div className="rating">
-                        <ReactStars {...options} /><span>({product.numOfReviews} Reviews)</span>
+                        {/* <ReactStars {...options} /><span>({product.numOfReviews} Reviews)</span> */}
+                        <Rating {...options} /><span>({product.numOfReviews} Reviews)</span>
+
                     </div>
                     {/* <Typography className="desc" style={{ maxheight: "100px", overflow: "auto" }} gutterBottom variant="body2" color="textSecondary" component="p">
                         {product.description}

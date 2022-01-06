@@ -1,0 +1,30 @@
+.sidebar{
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 0
+}
+
+/* .sidebar > a:first-child{
+    padding:0
+} */
+
+.sidebar a {
+    text-decoration: none;
+    color:rgba(0,0,0,0.493);
+    font:200 1rem;
+    padding: 2rem
+}
+
+.sidebar a:hover{
+    color:blue;
+    transform: scale(1.1)
+}
+
+.sidebar a > p{
+    display: flex;
+    align-items: center
+}
+
+.sidebar a > p > svg{
+    margin-right: 0.5rem
+}

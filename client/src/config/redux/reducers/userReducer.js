@@ -59,7 +59,7 @@ const loginReducer = (state = { token: "" }, action) => {
     }
 }
 
-const profileReducer = (state = { user: {}, isAuth: false, loading: false }, action) => {
+const profileReducer = (state = { user: {}, isAuth: false, }, action) => {
     switch (action.type) {
         case "PROFILE_REQUEST":
             return {

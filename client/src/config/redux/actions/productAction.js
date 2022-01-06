@@ -17,6 +17,19 @@ const getProducts = (keyword = "", page = 1, price = [0, 50000], category, ratin
     }
 }
 
+const getAdminProducts = () => async dispatch => {
+    try {
+        dispatch({ type: "ADMIN_PRODUCTS_REQUEST" })
+        const { data } = await axios({
+            method: 'GET',
+            url: "/api/admin/products",
+        })
+        dispatch({ type: "ADMIN_PRODUCTS_SUCCESS", payload: data.products })
+    } catch (error) {
+        dispatch({ type: "ADMIN_PRODUCTS_FAILURE", payload: error.response.data })
+    }
+}
+
 const clearErrors = () => async dispatch => {
     dispatch({ type: "CLEAR_ERRORS" })
 }
@@ -31,10 +44,46 @@ const getProductDetail = (id) => async dispatch => {
         })
         dispatch({ type: "PRODUCT_DETAIL_SUCCESS", payload: data.product })
     } catch (error) {
-        dispatch({ type: "FETCH_PRODUCTS_FAILURE", payload: error.response })
+        dispatch({ type: "FETCH_PRODUCTS_FAILURE", payload: error ?.response ?.data })
+    }
+}
+
+const newReview = (newReviewData) => async dispatch => {
+    try {
+        dispatch({ type: "NEW_REVIEW_REQUEST" })
+        const { data } = await axios({
+            method: 'PATCH',
+            url: `/api/review`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: newReviewData
+
+        })
+        dispatch({ type: "NEW_REVIEW_SUCCESS", payload: data.message })
+    } catch (error) {
+        dispatch({ type: "NEW_REVIEW_FAIL", payload: error ?.response ?.data.message })
+    }
+}
+
+const createProduct = (productData) => async dispatch => {
+    try {
+        dispatch({ type: "NEW_PRODUCT_REQUEST" })
+        const { data } = await axios({
+            method: 'POST',
+            url: `/api/admin/product`,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            data: productData
+
+        })
+        dispatch({ type: "NEW_PRODUCT_SUCCESS", payload: data })
+    } catch (error) {
+        dispatch({ type: "NEW_PRODUCT_FAILURE", payload: error ?.response ?.data })
     }
 }
 
 
-export { getProducts, clearErrors, getProductDetail }
+export { getProducts, clearErrors, getProductDetail, newReview, getAdminProducts, createProduct }
 

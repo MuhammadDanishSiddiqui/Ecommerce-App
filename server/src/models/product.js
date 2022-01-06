@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: [true, "Please enter product category."],
+        required: [true, "Please select product category."],
         lowercase: true
     },
     images: [

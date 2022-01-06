@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./ProductDetails.css"
 import { useSelector, useDispatch } from "react-redux"
-import { getProductDetail } from "../../config/redux/actions/productAction"
+import { getProductDetail, newReview, clearErrors } from "../../config/redux/actions/productAction"
 import Carousel from "react-material-ui-carousel"
 import { useEffect } from "react"
 import Grid from '@material-ui/core/Grid';
@@ -11,10 +11,13 @@ import { useParams } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ReactStars from "react-rating-stars-component"
+// import ReactStars from "react-rating-stars-component"
 import avatar from "../../avatar.png"
 import Paper from '@material-ui/core/Paper';
 import { addItemsToCart } from "../../config/redux/actions/cartActions"
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core"
+import { Rating } from "@material-ui/lab"
+
 
 const useStyles = makeStyles(theme => ({
 
@@ -134,97 +137,175 @@ function ProductDetails() {
     const classes = useStyles();
     const dispatch = useDispatch()
     const { product, loading, error } = useSelector(state => state.productDetail)
+    const [open, setOpen] = useState(false)
+    const [rating, setRatings] = useState(0)
+    const [comment, setComment] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+
+    const { message, error: reviewError, loading: reviewLoading } = useSelector(state => state.newReview)
 
     let { id } = useParams()
     useEffect(() => {
+        if (error) {
+            if (error.error) {
+                alert(error.error)
+            }
+            else {
+                alert(error.message)
+            }
+
+        }
         dispatch(getProductDetail(id))
-    }, [dispatch, id])
+    }, [dispatch, id, alert])
+
+    useEffect(() => {
+        if (reviewError) {
+            alert(reviewError)
+            setIsLoading(false)
+            dispatch(clearErrors())
+        }
+
+        if (message) {
+            dispatch(getProductDetail(id))
+            alert(message)
+            setIsLoading(false)
+            dispatch({ type: "NEW_REVIEW_RESET" })
+        }
+    }, [dispatch, reviewError, alert, message])
+    // const options = {
+    //     edit: false,
+    //     color: "black",
+    //     activeColor: "yellow",
+    //     size: 20,
+    //     value: product.ratings,
+    //     isHalf: true
+    // }
     const options = {
-        edit: false,
-        color: "black",
-        activeColor: "yellow",
-        size: 20,
+        // size: "large",
         value: product.ratings,
-        isHalf: true
+        readOnly: true,
+        precision: 0.5
+    }
+
+    const submitReviewTogg = () => {
+        open ? setOpen(false) : setOpen(true)
+
+    }
+
+    const reviewSubmitHandler = () => {
+        const myform = new FormData()
+        myform.append("rating", rating)
+        myform.append("comment", comment)
+        myform.append("productId", id)
+        dispatch(newReview(myform))
+        setOpen(false)
     }
 
     return (
         <>
-            {loading ? <div style={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {loading || isLoading ? <div style={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <CircularProgress />
-            </div> : <Grid container className={classes.root} alignItems="center" justifyContent="center">
-                    <Grid className={classes.leftSide} item sm={6} xs={12}>
+            </div> : <><Grid container className={classes.root} alignItems="center" justifyContent="center">
+                <Grid className={classes.leftSide} item sm={6} xs={12}>
 
-                        <Carousel className={classes.carousel_wrapper}>
-                            {product.images && product.images.map((item, i) => {
-                                return <img key={i} style={{ width: "100%", height: "420px" }} src={item.url} alt={`${i} Slide`} />
-                            })}
-                        </Carousel>
+                    <Carousel className={classes.carousel_wrapper}>
+                        {product.images && product.images.map((item, i) => {
+                            return <img key={i} style={{ width: "100%", height: "420px" }} src={item.url} alt={`${i} Slide`} />
+                        })}
+                    </Carousel>
 
-                    </Grid>
-                    <Grid className={classes.rightSide} item sm={6} xs={12}>
-                        <div style={{ width: "300px" }}>
-                            <Typography variant="h5">{product.name}</Typography>
-                            <Typography variant="body1">Product Id : {product._id}</Typography>
-                            <div className={classes.rating}>
-                                <ReactStars {...options} /><span>({product.numOfReviews} Reviews)</span>
-                            </div>
+                </Grid>
+                <Grid className={classes.rightSide} item sm={6} xs={12}>
+                    <div style={{ width: "300px" }}>
+                        <Typography variant="h5">{product.name}</Typography>
+                        <Typography variant="body1">Product Id : {product._id}</Typography>
+                        <div className={classes.rating}>
+                            {/* <ReactStars {...options} /><span>({product.numOfReviews} Reviews)</span> */}
+                            <Rating {...options} /><span>({product.numOfReviews} Reviews)</span>
                         </div>
-                        <div style={{ margin: "20px 0", width: "300px" }}>
-                            <Typography variant="h4">${product.price}</Typography>
-                            <div className={classes.add_to_cart}>
-                                <div className={classes.plus_minus}><button onClick={() => {
-                                    if (quantity <= 1)
-                                        return
-                                    setQuantity(quantity - 1)
-                                }}>-</button><span>{quantity}</span><button onClick={() => {
-                                    if (quantity >= product.stock)
-                                        return
-                                    setQuantity(quantity + 1)
-                                }}>+</button></div>
-                                <button onClick={() => {
-                                    dispatch(addItemsToCart(id, quantity))
-                                    alert("Item added to cart.")
-                                }} className={classes.add_to_cart_btn}>Add to Cart</button>
-                            </div>
+                    </div>
+                    <div style={{ margin: "20px 0", width: "300px" }}>
+                        <Typography variant="h4">${product.price}</Typography>
+                        <div className={classes.add_to_cart}>
+                            <div className={classes.plus_minus}><button onClick={() => {
+                                if (quantity <= 1)
+                                    return
+                                setQuantity(quantity - 1)
+                            }}>-</button><span>{quantity}</span><button onClick={() => {
+                                if (quantity >= product.stock)
+                                    return
+                                setQuantity(quantity + 1)
+                            }}>+</button></div>
+                            <button disabled={product.stock < 1 ? true : false} onClick={() => {
+                                dispatch(addItemsToCart(id, quantity))
+                                alert("Item added to cart.")
+                            }} className={classes.add_to_cart_btn}>Add to Cart</button>
                         </div>
-                        <div className={classes.status}>
-                            <Typography variant="body1">Status : {product.stock < 1 ? "Out of stock" : "In stock"}</Typography>
-                        </div>
+                    </div>
+                    <div className={classes.status}>
+                        <Typography variant="body1">Status : {product.stock < 1 ? "Out of stock" : "In stock"}</Typography>
+                    </div>
 
-                        <div style={{ width: "300px" }}>
-                            <div style={{ margin: "20px 0" }}>
-                                <Typography variant="h5">Description</Typography>
-                                <Typography variant="body1">{product.description}</Typography>
-                            </div>
-                            <button className={classes.add_to_cart_btn}>Submit Review</button>
+                    <div style={{ width: "300px" }}>
+                        <div style={{ margin: "20px 0" }}>
+                            <Typography variant="h5">Description</Typography>
+                            <Typography variant="body1">{product.description}</Typography>
                         </div>
-                    </Grid>
-                </Grid>}
-            <h1 className={classes.reviewHeading}>Reviews</h1>
-            <Grid justifyContent="space-around" container style={{ marginBottom: "20px" }}>
-                {product.reviews && product.reviews[0] ? product.reviews.map((review, i) => {
-                    const optionsReview = {
-                        edit: false,
-                        color: "black",
-                        activeColor: "yellow",
-                        size: 20,
-                        value: review.rating,
-                        isHalf: true
-                    }
-                    return <Grid key={i} item md={3} sm={5} xs={8}>
-                        <Paper className={classes.reviews}>
-                            <img className={classes.avatar} src={avatar} alt="avatar" />
-                            <Typography variant="body1">testing name</Typography>
-                            <ReactStars {...optionsReview} />
-                            <Typography style={{ overflow: "auto", maxHeight: "80px" }} variant="body1">testing name asdas</Typography>
-                        </Paper>
-                    </Grid>
-                }) :
-                    <Typography variant="body1">No reviews yet</Typography>
-                }
-
+                        <button onClick={submitReviewTogg} className={classes.add_to_cart_btn}>Submit Review</button>
+                    </div>
+                </Grid>
             </Grid>
+
+                    <h1 className={classes.reviewHeading}>Reviews</h1>
+                    <Dialog aria-labelledby="simple-dialog-title" open={open} onClose={submitReviewTogg} >
+                        <DialogTitle>Submit Review</DialogTitle>
+                        <DialogContent className="submitDialog">
+                            <Rating onChange={e => setRatings(Number(e.target.value))} value={rating} />
+                            <textarea className="submitDialogTextArea" cols="30" rows="5" value={comment} onChange={e => setComment(e.target.value)}>
+
+                            </textarea>
+                        </DialogContent>
+                        <DialogActions><Button color="secondary" onClick={submitReviewTogg}>Cancel</Button>
+                            <Button onClick={() => {
+                                setIsLoading(true)
+                                reviewSubmitHandler()
+                            }} color="primary">Submit</Button></DialogActions>
+                    </Dialog>
+
+
+                    <Grid justifyContent="space-around" container style={{ marginBottom: "20px" }}>
+                        {product.reviews && product.reviews[0] ? product.reviews.map((review, i) => {
+                            // const optionsReview = {
+                            //     edit: false,
+                            //     color: "black",
+                            //     activeColor: "yellow",
+                            //     size: 20,
+                            //     value: review.rating,
+                            //     isHalf: true
+                            // }
+                            const optionsReview = {
+
+                                // size: "large",
+                                value: review.rating,
+                                readOnly: true,
+                                precision: 0.5
+                            }
+                            return <Grid key={i} item md={3} sm={5} xs={8}>
+                                <Paper className={classes.reviews}>
+                                    <img className={classes.avatar} src={avatar} alt="avatar" />
+                                    <Typography variant="body1">{review.name}</Typography>
+                                    {/* <ReactStars {...optionsReview} /> */}
+                                    <Rating {...optionsReview} />
+                                    <Typography style={{ overflow: "auto", maxHeight: "80px" }} variant="body1">{review.comment}</Typography>
+                                </Paper>
+                            </Grid>
+                        }) :
+                            <Typography variant="body1">No reviews yet</Typography>
+                        }
+
+                    </Grid>
+
+                </>}
 
 
         </>

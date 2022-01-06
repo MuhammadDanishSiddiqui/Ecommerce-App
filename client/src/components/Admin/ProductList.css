@@ -1,0 +1,51 @@
+.extraDashPro{
+    margin-top: 0px !important;
+}
+.productListContainer{
+    margin-top: 70px;
+    width:100%;
+    box-sizing: border-box;
+    border-left: 1px solid rgba(0,0,0,0.158);
+    display: flex;
+    flex-direction: column
+}
+
+#productListHeading{
+    font:400 2rem;
+    padding:0.5vmax;
+    box-sizing: border-box;
+    color:rgba(0,0,0,0637);
+    margin:2rem;
+    text-align: center
+}
+.productListTable{
+    border:none !important
+}
+.productListTable > div{
+    font:300 1vmax;
+    color:rgba(0,0,0,0.678);
+    border: none !important
+}
+.productListTable a,.productListTable button{
+    color:rgba(0,0,0,0.527)
+
+}
+.productListTable a:hover{
+    color:blue
+    
+}
+.productListTable button:hover{
+    color:rgb(236,30,30)
+    
+}
+
+@media screen and (max-width:600px){
+    .extraDashPro{
+        margin-top: 70px !important
+    }
+
+.productListTable div{
+    font:300 4vw;
+
+}
+}

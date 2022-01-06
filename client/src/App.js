@@ -19,6 +19,9 @@ import ConfirmOrder from "./components/Cart/ConfirmOrder.js"
 import Payment from "./components/Cart/Payment.js"
 import OrderSuccess from "./components/Cart/OrderSuccess.js"
 import MyOrders from "./components/Order/MyOrders.js"
+import OrderDetails from "./components/Order/OrderDetails.js"
+import Dashboard from "./components/Admin/Dashboard.js"
+import ProductList from "./components/Admin/ProductList.js"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 
@@ -34,6 +37,7 @@ import {
 } from "react-router-dom";
 import axios from 'axios';
 import ProtectedRoute from "./components/ProctedRoute"
+import NewProduct from './components/Admin/NewProduct';
 
 
 
@@ -141,6 +145,43 @@ function App() {
           element={
             <ProtectedRoute redirectTo="/login">
               <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/order/:id"
+          element={
+            <ProtectedRoute redirectTo="/login">
+              <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <ProductList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/product"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <NewProduct />
             </ProtectedRoute>
           }
         />

@@ -82,8 +82,9 @@ export default function ButtonAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                {user ?.role == "admin" && <MenuItem component={Link} to="/dashboard" onClick={handleClose}>Profile</MenuItem>}
                 <MenuItem component={Link} to="/profile" onClick={handleClose}>Profile</MenuItem>
+                {user.role == "admin" && <MenuItem component={Link} to="/admin/dashboard" onClick={handleClose}>Dashboard</MenuItem>}
+                <MenuItem component={Link} to="/orders" onClick={handleClose}>My Orders</MenuItem>
                 <MenuItem component={Link} to="/password/update" onClick={handleClose}>Change Password</MenuItem>
                 <MenuItem onClick={async () => {
                     try {
@@ -91,7 +92,8 @@ export default function ButtonAppBar() {
                             method: "post",
                             url: "/api/user/logout"
                         })
-                        localStorage.removeItem("token")
+                        localStorage.clear()
+                        sessionStorage.clear()
                         axios.defaults.headers.common["Authorization"] = null
                         dispatch({ type: "USER_LOGOUT" })
                         handleClose()
