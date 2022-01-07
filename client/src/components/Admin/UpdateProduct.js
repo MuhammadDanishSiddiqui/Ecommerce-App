@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./newProduct.css"
 import { useSelector, useDispatch } from "react-redux"
-import { clearErrors, createProduct } from "../../config/redux/actions/productAction"
+import { clearErrors, getProductDetail } from "../../config/redux/actions/productAction"
 import { Button } from "@material-ui/core"
 import AccountTreeIcon from "@material-ui/icons/AccountTree"
 import DescriptionIcon from "@material-ui/icons/Description"
@@ -11,34 +11,41 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney"
 import Sidebar from "./Sidebar"
 import { useNavigate } from "react-router-dom"
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useParams } from "react-router-dom"
+import axios from "axios"
 
-
-function NewProduct() {
+function UpdateProduct() {
+    const { id } = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { loading, error, message } = useSelector(state => state.newProduct)
+    const { error, product } = useSelector(state => state.productDetail)
     const [name, setName] = useState("")
     const [price, setPrice] = useState(0)
     const [description, setDescription] = useState("")
     const [category, setCategory] = useState("")
     const [stock, setStock] = useState(0)
     const [images, setImages] = useState([])
+    const [oldImages, setOldImages] = useState([])
     const [imagesPreview, setImagesPreview] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [updateError, setUpdateError] = useState()
 
     const categories = ["mobile", "laptop", "furniture", "footware", "camera"]
 
     useEffect(() => {
-        if (error) {
-            dispatch(clearErrors())
+        dispatch(getProductDetail(id))
+        if (product) {
+            setName(product.name)
+            setDescription(product.description)
+            setPrice(product.price)
+            setCategory(product.category)
+            setStock(product.stock)
+            setOldImages(product.images)
         }
-        if (message) {
-            alert(message)
-            dispatch({ type: "NEW_PRODUCT_RESET" })
-            navigate("/admin/dashboard")
-        }
-    }, [dispatch, alert, message, navigate])
+    }, [dispatch])
 
-    const createProductSubmitHandler = (e) => {
+    const updateProductSubmitHandler = async (e) => {
+        setUpdateError(null)
         e.preventDefault()
         const myform = new FormData()
         myform.append("name", name)
@@ -50,13 +57,32 @@ function NewProduct() {
         images.forEach(image => {
             myform.append("images", image)
         })
-        dispatch(createProduct(myform))
+
+        try {
+            setIsLoading(true)
+            const { data } = await axios({
+                method: "PATCH",
+                url: "/api/admin/product/" + id,
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                },
+                data: myform
+            })
+            setIsLoading(false)
+            alert(data.message)
+            navigate("/admin/products")
+        } catch (error) {
+            setIsLoading(false)
+            setUpdateError(error.response.data)
+        }
+
     }
 
     const createProductImagesChange = (e) => {
         const files = Array.from(e.target.files)
         setImages([])
         setImagesPreview([])
+        setOldImages([])
         files.forEach(file => {
             const reader = new FileReader()
             reader.onload = () => {
@@ -81,21 +107,21 @@ function NewProduct() {
             <div className="dashboard">
                 <Sidebar />
                 <div className="newProductContainer">
-                    <form className="createProductForm" encType="multipart/form-data" onSubmit={createProductSubmitHandler}>
-                        <h1>Create Product</h1>
+                    <form className="createProductForm" encType="multipart/form-data" onSubmit={updateProductSubmitHandler}>
+                        <h1>Update Product</h1>
                         <div>
                             <SpellcheckIcon />
                             <input type="text" placeholder="Product Name" required value={name} onChange={e => setName(e.target.value)} />
                         </div>
                         {
-                            error ?.errors ?.name && <span style={{ color: "red" }}>{error ?.errors ?.name.message}</span>
+                            updateError ?.errors ?.name && <span style={{ color: "red" }}>{updateError ?.errors ?.name.message}</span>
                         }
                         <div>
                             <AttachMoneyIcon />
                             <input type="number" placeholder="Price" required value={price} onChange={e => setPrice(e.target.value)} />
                         </div>
                         {
-                            error ?.errors ?.price && <span style={{ color: "red" }}>{error ?.errors ?.price.message}</span>
+                            updateError ?.errors ?.price && <span style={{ color: "red" }}>{updateError ?.errors ?.price.message}</span>
                         }
                         <div>
                             <DescriptionIcon />
@@ -103,7 +129,7 @@ function NewProduct() {
                             </textarea>
                         </div>
                         {
-                            error ?.errors ?.description && <span style={{ color: "red" }}>{error ?.errors ?.description.message}</span>
+                            updateError ?.errors ?.description && <span style={{ color: "red" }}>{updateError ?.errors ?.description.message}</span>
                         }
                         <div>
                             <AccountTreeIcon />
@@ -115,7 +141,7 @@ function NewProduct() {
                             </select>
                         </div>
                         {
-                            error ?.errors ?.category && <span style={{ color: "red" }}>{error ?.errors ?.category.message}</span>
+                            updateError ?.errors ?.category && <span style={{ color: "red" }}>{updateError ?.errors ?.category.message}</span>
                         }
                         <div>
                             <StorageIcon />
@@ -127,8 +153,14 @@ function NewProduct() {
                             <input type="file" name="avatar" required accept="image/*" multiple onChange={createProductImagesChange} />
                         </div>
                         {
-                            error ?.errors ?.images && <span style={{ color: "red" }}>{error ?.errors ?.images.message}</span>
+                            updateError ?.errors ?.images && <span style={{ color: "red" }}>{updateError ?.errors ?.images.message}</span>
                         }
+
+                        <div className="createProductFormImage">
+                            {oldImages && oldImages.map((image, index) => {
+                                return <img src={image.url} key={index} alt="old Images" />
+                            })}
+                        </div>
 
                         <div className="createProductFormImage">
                             {imagesPreview.map((image, index) => {
@@ -136,11 +168,11 @@ function NewProduct() {
                             })}
                         </div>
                         {
-                            error ?.error && <span style={{ color: "red" }}>{error ?.error}</span>
+                            updateError ?.error && <span style={{ color: "red" }}>{updateError ?.error}</span>
                         }
 
                         {
-                            loading ? <Button style={{ backgroundColor: "white" }} id="createProductButton" type="submit" disabled={loading ? true : false}>{<CircularProgress />}</Button> : <Button id="createProductButton" type="submit" disabled={loading ? true : false}>Create</Button>
+                            isLoading ? <Button style={{ backgroundColor: "white" }} id="createProductButton" type="submit" disabled={isLoading ? true : false}>{<CircularProgress />}</Button> : <Button id="createProductButton" type="submit" disabled={isLoading ? true : false}>Update</Button>
                         }
 
 
@@ -151,4 +183,4 @@ function NewProduct() {
     )
 }
 
-export default NewProduct
+export default UpdateProduct

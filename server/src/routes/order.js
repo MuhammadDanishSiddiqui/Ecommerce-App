@@ -28,12 +28,16 @@ router.get("/orders/me", auth, async (req, res) => {
 })
 
 router.get("/admin/orders", auth, authRoles, async (req, res) => {
-    const orders = await Order.find()
-    let totalAmount = 0
-    orders.forEach((order) => {
-        totalAmount += order.totalPrice
-    })
-    res.send({ orders, totalAmount })
+    try {
+        const orders = await Order.find()
+        let totalAmount = 0
+        orders.forEach((order) => {
+            totalAmount += order.totalPrice
+        })
+        res.send({ orders, totalAmount })
+    } catch (error) {
+        res.status(500).send(error)
+    }
 })
 
 router.patch("/admin/order/:id", auth, authRoles, async (req, res) => {
@@ -44,9 +48,11 @@ router.patch("/admin/order/:id", auth, authRoles, async (req, res) => {
     if (order.orderStatus == "Delievered") {
         return res.status(400).send({ error: "You have already delievered this order." })
     }
-    order.orderItems.forEach(async order => {
-        await updateStock(order.product, order.quantity)
-    })
+    if (req.body.status == "Shipped") {
+        order.orderItems.forEach(async order => {
+            await updateStock(order.product, order.quantity)
+        })
+    }
     order.orderStatus = req.body.status
     if (req.body.status == "Delievered") {
         order.deleiveredAt = Date.now()

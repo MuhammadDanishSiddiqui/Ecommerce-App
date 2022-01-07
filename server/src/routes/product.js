@@ -55,6 +55,37 @@ router.patch("/admin/product/:id", auth, authRoles, async (req, res) => {
         if (!product) {
             return res.status(404).send({ error: "Product not found" })
         }
+
+        let images = []
+        if (typeof req.body.images == "string") {
+            images.push(req.body.images)
+        }
+        else {
+            images = req.body.images
+        }
+
+        if (images != undefined) {
+            for (let i = 0; i < product.images.length; i++) {
+                await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+            }
+            const imagesLink = []
+
+            for (let i = 0; i < images.length; i++) {
+                const result = await cloudinary.v2.uploader.upload(images[i], {
+                    folder: "products"
+                })
+                imagesLink.push({
+                    public_id: result.public_id,
+                    url: result.secure_url
+                })
+
+            }
+
+            req.body.images = imagesLink
+        }
+
+
+
         updates.forEach(update => {
             product[update] = req.body[update]
         })
@@ -71,6 +102,11 @@ router.delete("/admin/product/:id", auth, authRoles, async (req, res) => {
         if (!product) {
             return res.status(404).send({ error: "Product not found" })
         }
+
+        for (let i = 0; i < product.images.length; i++) {
+            await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+        }
+
         const deletedpProduct = await Product.findByIdAndDelete(req.params.id)
         res.send({ message: "Product deleted successfully", product: deletedpProduct })
     } catch (error) {

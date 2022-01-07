@@ -43,7 +43,7 @@ function Login({ isLoading }) {
                 isLoading ? <div style={{ width: "100%", height: "90vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <CircularProgress />
                 </div> : <>
-                        <div className="extra">
+                        <div className="extraUser">
 
                         </div>
                         <form className={"register_user_wrapper"} onSubmit={handleSubmit} >

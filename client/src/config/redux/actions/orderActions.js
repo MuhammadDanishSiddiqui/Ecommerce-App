@@ -29,6 +29,18 @@ const myOrders = () => async (dispatch) => {
     }
 }
 
+const getAllOrders = () => async (dispatch) => {
+    try {
+        dispatch({ type: "ALL_ORDERS_REQUEST" })
+        const { data } = await axios.get("/api/admin/orders")
+        dispatch({ type: "ALL_ORDERS_SUCCESS", payload: data.orders })
+
+
+    } catch (error) {
+        dispatch({ type: "ALL_ORDERS_FAIL", payload: error.response.data.message })
+    }
+}
+
 const getOrderDetails = (id) => async (dispatch) => {
     try {
         dispatch({ type: "ORDER_DETAILS_REQUEST" })
@@ -37,7 +49,7 @@ const getOrderDetails = (id) => async (dispatch) => {
 
 
     } catch (error) {
-        dispatch({ type: "ORDER_DETAILS_FAIL", payload: error.response.data.message })
+        dispatch({ type: "ORDER_DETAILS_FAIL", payload: error.response.data })
     }
 }
 
@@ -45,4 +57,4 @@ const clearErrors = () => async (dispatch) => {
     dispatch({ type: "CLEAR_ERRORS" })
 }
 
-export { createOrder, clearErrors, myOrders, getOrderDetails }
+export { createOrder, clearErrors, myOrders, getOrderDetails, getAllOrders }

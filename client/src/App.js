@@ -22,6 +22,8 @@ import MyOrders from "./components/Order/MyOrders.js"
 import OrderDetails from "./components/Order/OrderDetails.js"
 import Dashboard from "./components/Admin/Dashboard.js"
 import ProductList from "./components/Admin/ProductList.js"
+import OrderList from "./components/Admin/OrderList.js"
+import UpdateOrder from "./components/Admin/UpdateOrder.js"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 
@@ -38,6 +40,7 @@ import {
 import axios from 'axios';
 import ProtectedRoute from "./components/ProctedRoute"
 import NewProduct from './components/Admin/NewProduct';
+import UpdateProduct from "./components/Admin/UpdateProduct.js"
 
 
 
@@ -186,6 +189,32 @@ function App() {
           }
         />
 
+        <Route
+          path="/admin/product/:id"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <UpdateProduct />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <OrderList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/order/:id"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <UpdateOrder />
+            </ProtectedRoute>
+          }
+        />
 
 
         {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { DataGrid } from "@material-ui/data-grid"
 import "./ProductList.css"
 import { useSelector, useDispatch } from "react-redux"
-import { clearErrors, getAdminProducts } from "../../config/redux/actions/productAction"
+import { clearErrors, getAllOrders } from "../../config/redux/actions/orderActions"
 import { Link } from "react-router-dom"
 import { Button } from "@material-ui/core"
 import EditIcon from "@material-ui/icons/Edit"
@@ -11,10 +11,10 @@ import Sidebar from "./Sidebar"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 
-function ProductList() {
+function OrderList() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { error, products } = useSelector(state => state.adminProducts)
+    const { error, orders } = useSelector(state => state.allOrders)
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -29,54 +29,54 @@ function ProductList() {
             }
 
         }
-        dispatch(getAdminProducts())
+        dispatch(getAllOrders())
 
     }, [dispatch, alert, error])
     const columns = [
+        { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
         {
-            field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5
+            field: "status", headerName: "Status", minWidth: 150, flex: 0.5, cellClassName: (params) => {
+                return params.getValue(params.id, "status") === "Delievered" ? "greenColor" : "redColor"
+            }
         },
         {
-            field: "name", headerName: "Name", minWidth: 350, flex: 1
+            field: "itemsQty", headerName: "Items Qty", type: "number", minWidth: 150, flex: 0.3
         },
         {
-            field: "stock", headerName: "Stock", type: "number", minWidth: 150, flex: 0.3
-        },
-        {
-            field: "price", headerName: "Price", type: "number", minWidth: 270, flex: 0.5
+            field: "amount", headerName: "Amount", type: "number", minWidth: 270, flex: 0.5
         },
         {
             field: "actions", headerName: "Actions", minWidth: 150, flex: 0.3, type: "number", sortable: false,
             renderCell: (params) => {
                 return <>
-                    <Link to={`/admin/product/${params.getValue(params.id, "id")}`}>
+                    <Link to={`/admin/order/${params.getValue(params.id, "id")}`}>
                         <EditIcon />
                     </Link>
-                    <Button disabled={isLoading ? true : false} onClick={() => deleteProductHandler(params.getValue(params.id, "id"))}><DeleteIcon /></Button>
+                    <Button disabled={isLoading ? true : false} onClick={() => deleteOrderHandler(params.getValue(params.id, "id"))}><DeleteIcon /></Button>
                 </>
             }
         }
     ]
     const rows = []
-    products && products.forEach(item => {
+    orders && orders.forEach(item => {
         rows.push({
             id: item._id,
-            stock: item.stock,
-            price: item.price,
-            name: item.name
+            itemsQty: item.orderItems.length,
+            amount: item.totalPrice,
+            status: item.orderStatus
         })
     })
 
-    const deleteProductHandler = async (id) => {
+    const deleteOrderHandler = async (id) => {
         try {
             setIsLoading(true)
             const { data } = await axios({
                 method: "DELETE",
-                url: "/api/admin/product/" + id,
+                url: "/api/admin/order/" + id,
             })
             setIsLoading(false)
             alert(data.message)
-            navigate("/admin/dashboard")
+            dispatch(getAllOrders())
 
         } catch (error) {
             setIsLoading(false)
@@ -95,7 +95,7 @@ function ProductList() {
             <div className="dashboard">
                 <Sidebar />
                 <div className="productListContainer">
-                    <h1 id="productListHeading">All Products</h1>
+                    <h1 id="productListHeading">All Orders</h1>
                     <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight />
                 </div>
             </div>
@@ -103,4 +103,4 @@ function ProductList() {
     )
 }
 
-export default ProductList
+export default OrderList

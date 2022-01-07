@@ -1,5 +1,5 @@
-.extra{
-    margin-top: 90px !important
+.extraUser{
+    margin-top: 90px
 }
 
 .register_user_wrapper{
@@ -44,7 +44,7 @@ background-color: blue
 @media screen and (max-width:600px){
     .register_user_wrapper{
         margin-top: 180px }
-        .extra{
+        .extraUser{
             margin-top: 170px
         }
 

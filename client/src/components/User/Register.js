@@ -60,7 +60,7 @@ function Register({ isLoading }) {
                     <CircularProgress />
                 </div> :
                     <>
-                        <div className="extra"></div>
+                        <div className="extraUser"></div>
                         <form className={"register_user_wrapper"} onSubmit={handleSubmit} >
                             <h3 style={{ backgroundColor: "blue", color: "white", width: "100%", textAlign: "center", padding: "10px", fontSize: "25px", marginBottom: "20px" }}>Register</h3>
                             <input disabled={loading} type="text" value={newUser.name} name="name" placeholder="Enter your name" onChange={handleChange} />
