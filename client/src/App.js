@@ -26,6 +26,7 @@ import OrderList from "./components/Admin/OrderList.js"
 import UpdateOrder from "./components/Admin/UpdateOrder.js"
 import UsersList from "./components/Admin/UsersList.js"
 import UpdateUser from "./components/Admin/UpdateUser.js"
+import NotFound from "./components/NotFound/NotFound.js"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 
@@ -98,8 +99,13 @@ function App() {
         <Route exact path="/password/forgot" element={<ForgotPassword />} />
         <Route exact path="/password/reset/:token" element={<ResetPassword />} />
         <Route exact path="/cart" element={<Cart />} />
+        <Route exact path="/register" element={<Register isLoading={loading} />} />
+        <Route exact path="/login" element={<Login isLoading={loading} />} />
+        <Route exact path="/product/:id" element={<ProductDetails />} />
+        <Route exact path="/products" element={<Products />} />
+        <Route exact path="/products/:keyword" element={<Products />} />
+        <Route exact path="/search" element={<Search />} />
         {/* <Route exact path="/profile" element={<Profile />} /> */}
-
 
         <Route
           path="/profile"
@@ -252,14 +258,8 @@ function App() {
           />
         }
 
+        <Route path="*" element={<NotFound />} />
 
-
-        <Route exact path="/register" element={<Register isLoading={loading} />} />
-        <Route exact path="/login" element={<Login isLoading={loading} />} />
-        <Route exact path="/product/:id" element={<ProductDetails />} />
-        <Route exact path="/products" element={<Products />} />
-        <Route exact path="/products/:keyword" element={<Products />} />
-        <Route exact path="/search" element={<Search />} />
       </Routes >
     </>
   );

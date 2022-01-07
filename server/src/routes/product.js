@@ -207,7 +207,13 @@ router.delete("/review", auth, async (req, res) => {
     reviews.forEach(rev => {
         avg += rev.rating
     })
-    const ratings = avg / reviews.length
+    let ratings = 0
+    if (reviews.length == 0) {
+        ratings = 0
+    } else {
+        ratings = avg / reviews.length
+    }
+
     const numOfReviews = reviews.length
     await Product.findByIdAndUpdate(req.query.productId, { reviews, ratings, numOfReviews }, { new: true })
     res.send({ message: "Review deleted successfully" })
