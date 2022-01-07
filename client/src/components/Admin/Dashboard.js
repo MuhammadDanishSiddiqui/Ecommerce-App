@@ -7,10 +7,14 @@ import { Link } from "react-router-dom"
 import { Line, Doughnut } from "react-chartjs-2"
 import Chart from 'chart.js/auto'
 import { useSelector, useDispatch } from "react-redux"
+import { getAllOrders } from "../../config/redux/actions/orderActions"
+import { getAllUsers } from "../../config/redux/actions/userActions"
 
 function Dashboard() {
     const dispatch = useDispatch()
     const { error, products } = useSelector(state => state.adminProducts)
+    const { orders } = useSelector(state => state.allOrders)
+    const { users } = useSelector(state => state.allUsers)
 
     useEffect(() => {
         if (error) {
@@ -25,6 +29,8 @@ function Dashboard() {
 
         }
         dispatch(getAdminProducts())
+        dispatch(getAllOrders())
+        dispatch(getAllUsers())
 
     }, [dispatch, alert, error])
 
@@ -74,11 +80,11 @@ function Dashboard() {
                             </Link>
                             <Link to="/admin/orders">
                                 <p>Orders</p>
-                                <p>4</p>
+                                <p>{orders && orders.length}</p>
                             </Link>
                             <Link to="/admin/users">
                                 <p>Users</p>
-                                <p>2</p>
+                                <p>{users && users.length}</p>
                             </Link>
                         </div>
                     </div>

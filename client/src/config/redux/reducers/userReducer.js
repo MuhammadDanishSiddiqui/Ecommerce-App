@@ -91,4 +91,66 @@ const profileReducer = (state = { user: {}, isAuth: false, }, action) => {
     }
 }
 
-export { registerReducer, loginReducer, profileReducer }
+const allUsersReducer = (state = { users: [] }, action) => {
+    switch (action.type) {
+        case "ALL_USERS_REQUEST":
+            return {
+                ...state,
+                loading: true,
+            }
+        case "ALL_USERS_SUCCESS":
+            return {
+                ...state,
+                loading: false,
+                users: action.payload,
+
+            }
+        case "ALL_USERS_FAIL":
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                user: []
+            }
+        case "CLEAR_ERRORS":
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state
+    }
+}
+
+const userDetailReducer = (state = { users: {} }, action) => {
+    switch (action.type) {
+        case "USER_DETAIL_REQUEST":
+            return {
+                ...state,
+                loading: true,
+            }
+        case "USER_DETAIL_SUCCESS":
+            return {
+                ...state,
+                loading: false,
+                user: action.payload.user,
+
+            }
+        case "USER_DETAIL_FAIL":
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+                user: {}
+            }
+        case "CLEAR_ERRORS":
+            return {
+                ...state,
+                error: null
+            }
+        default:
+            return state
+    }
+}
+
+export { registerReducer, loginReducer, profileReducer, allUsersReducer, userDetailReducer }

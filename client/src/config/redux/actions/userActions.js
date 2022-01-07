@@ -59,8 +59,47 @@ const getUserProfile = () => async (dispatch) => {
     }
 }
 
+const getAllUsers = () => async (dispatch) => {
+    try {
+        dispatch({ type: "ALL_USERS_REQUEST" })
+        const response = await axios({
+            method: "get",
+            url: "/api/admin/users",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        dispatch({ type: "ALL_USERS_SUCCESS", payload: response.data })
+    } catch (error) {
+        if (!error.response) {
+            return dispatch({ type: "ALL_USERS_FAIL", payload: "No internet connection" })
+        }
+        dispatch({ type: "ALL_USERS_FAIL", payload: error.response.data })
+    }
+}
+
+
+const getUserDetail = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: "USER_DETAIL_REQUEST" })
+        const response = await axios({
+            method: "get",
+            url: "/api/admin/user/" + id,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        dispatch({ type: "USER_DETAIL_SUCCESS", payload: response.data })
+    } catch (error) {
+        if (!error.response) {
+            return dispatch({ type: "USER_DETAIL_FAIL", payload: "No internet connection" })
+        }
+        dispatch({ type: "USER_DETAIL_FAIL", payload: error.response.data })
+    }
+}
+
 const clearErrors = () => (dispatch) => {
     dispatch({ type: "CLEAR_ERRORS" })
 }
 
-export { registerUser, clearErrors, loginUser, getUserProfile }
+export { registerUser, clearErrors, loginUser, getUserProfile, getAllUsers, getUserDetail }

@@ -7,7 +7,7 @@ function ProctedRoute({ children, redirectTo, isAdmin }) {
 
     return (
         // localStorage.getItem("token") ? children : <Navigate to={redirectTo} />
-        loading == false && (isAuth == false ? <Navigate to={redirectTo} /> : isAdmin == true && user.role != "admin" ? <Navigate to={redirectTo} /> : children)
+        loading == false && (isAuth == false ? <Navigate to={redirectTo} /> : isAdmin == true && user.role != "admin" ? <Navigate to={"/"} /> : children)
     )
 }
 

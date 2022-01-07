@@ -24,6 +24,8 @@ import Dashboard from "./components/Admin/Dashboard.js"
 import ProductList from "./components/Admin/ProductList.js"
 import OrderList from "./components/Admin/OrderList.js"
 import UpdateOrder from "./components/Admin/UpdateOrder.js"
+import UsersList from "./components/Admin/UsersList.js"
+import UpdateUser from "./components/Admin/UpdateUser.js"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 
@@ -212,6 +214,25 @@ function App() {
           element={
             <ProtectedRoute redirectTo="/login" isAdmin={true}>
               <UpdateOrder />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/user/:id"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <UpdateUser />
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute redirectTo="/login" isAdmin={true}>
+              <UsersList />
             </ProtectedRoute>
           }
         />

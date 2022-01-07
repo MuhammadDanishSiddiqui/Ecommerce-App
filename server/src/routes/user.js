@@ -158,6 +158,11 @@ router.delete("/admin/user/:id", auth, authRoles, async (req, res) => {
         if (!user) {
             return res.status(404).send({ error: "user not found" })
         }
+        if (user.avatar ?.public_id) {
+            const imageId = user.avatar.public_id
+            await cloudinary.v2.uploader.destroy(imageId)
+        }
+
         res.send({ message: "User deleted successfully", user })
     } catch (error) {
         res.status(500).send(error)

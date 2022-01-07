@@ -1,6 +1,6 @@
 import { combineReducers } from "redux"
 import { productReducer, productDetailReducer, newReviewReducer, adminProductReducer, newProductReducer } from "./reducers/productReducer"
-import { registerReducer, loginReducer, profileReducer } from "./reducers/userReducer"
+import { registerReducer, loginReducer, profileReducer, allUsersReducer, userDetailReducer } from "./reducers/userReducer"
 import { newOrderReducer, myOrdersReducer, orderDetailsReducer, allOrdersReducer } from "./reducers/orderReducer"
 import { cartReducer } from "./reducers/cartReducer"
 
@@ -17,7 +17,9 @@ const appReducer = combineReducers({
     newReview: newReviewReducer,
     adminProducts: adminProductReducer,
     newProduct: newProductReducer,
-    allOrders: allOrdersReducer
+    allOrders: allOrdersReducer,
+    allUsers: allUsersReducer,
+    userDetail: userDetailReducer
 })
 
 const rootReducer = (state, action) => {
