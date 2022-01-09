@@ -6,12 +6,10 @@ import Carousel from "react-material-ui-carousel"
 import { useEffect } from "react"
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ToastContainer, toast } from 'react-toastify';
 import { useParams } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import ReactStars from "react-rating-stars-component"
 import avatar from "../../avatar.png"
 import Paper from '@material-ui/core/Paper';
 import { addItemsToCart } from "../../config/redux/actions/cartActions"
@@ -38,13 +36,6 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-
-        // [theme.breakpoints.down("sm")]: {
-        //     marginTop: "30px",
-        // },
-        // [theme.breakpoints.down("xs")]: {
-        //     marginTop: "70px",
-        // }
     },
     rightSide: {
         display: "flex",
@@ -172,16 +163,7 @@ function ProductDetails() {
             dispatch({ type: "NEW_REVIEW_RESET" })
         }
     }, [dispatch, reviewError, alert, message])
-    // const options = {
-    //     edit: false,
-    //     color: "black",
-    //     activeColor: "yellow",
-    //     size: 20,
-    //     value: product.ratings,
-    //     isHalf: true
-    // }
     const options = {
-        // size: "large",
         value: product.ratings,
         readOnly: true,
         precision: 0.5
@@ -220,7 +202,6 @@ function ProductDetails() {
                         <Typography variant="h5">{product.name}</Typography>
                         <Typography variant="body1">Product Id : {product._id}</Typography>
                         <div className={classes.rating}>
-                            {/* <ReactStars {...options} /><span>({product.numOfReviews} Reviews)</span> */}
                             <Rating {...options} /><span>({product.numOfReviews} Reviews)</span>
                         </div>
                     </div>
@@ -275,17 +256,7 @@ function ProductDetails() {
 
                     <Grid justifyContent="space-around" container style={{ marginBottom: "20px" }}>
                         {product.reviews && product.reviews[0] ? product.reviews.map((review, i) => {
-                            // const optionsReview = {
-                            //     edit: false,
-                            //     color: "black",
-                            //     activeColor: "yellow",
-                            //     size: 20,
-                            //     value: review.rating,
-                            //     isHalf: true
-                            // }
                             const optionsReview = {
-
-                                // size: "large",
                                 value: review.rating,
                                 readOnly: true,
                                 precision: 0.5
@@ -294,7 +265,6 @@ function ProductDetails() {
                                 <Paper className={classes.reviews}>
                                     <img className={classes.avatar} src={avatar} alt="avatar" />
                                     <Typography variant="body1">{review.name}</Typography>
-                                    {/* <ReactStars {...optionsReview} /> */}
                                     <Rating {...optionsReview} />
                                     <Typography style={{ overflow: "auto", maxHeight: "80px" }} variant="body1">{review.comment}</Typography>
                                 </Paper>

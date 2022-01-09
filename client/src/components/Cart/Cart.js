@@ -81,7 +81,7 @@ function Cart() {
             </div>
 
             {
-                cartItems.length == 0 ? <Typography variant="h4" style={{ textAlign: "center", marginBottom: "10px" }}>Nothing in Your Cart</Typography> : <>
+                cartItems.length == 0 ? <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Nothing in Your Cart</h3> : <>
                     <Typography variant="h4" style={{ textAlign: "center", marginBottom: "10px" }}>Your Cart</Typography>
                     {
                         cartItems.map(item => {

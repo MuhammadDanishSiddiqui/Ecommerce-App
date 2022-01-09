@@ -50,7 +50,7 @@ function ForgotPassword() {
 
     return (
         <>
-            <div className="extra"></div>
+            <div className="extraUser"></div>
             <div className="register_user_wrapper">
                 <h3 style={{ backgroundColor: "blue", color: "white", width: "100%", textAlign: "center", padding: "10px", fontSize: "25px", marginBottom: "20px" }}>Forgot Password</h3>
                 <div>

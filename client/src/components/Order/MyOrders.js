@@ -69,8 +69,13 @@ function MyOrders() {
                     <>
                         <div className="extra"></div>
                         <div className="myOrderPage">
-                            <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="myOrdersTable" autoHeight />
-                            <Typography id="myOrdersHeading">{user.name}'s Orders</Typography>
+                            {
+                                orders && orders[0] ?
+                                    <>
+                                        <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="myOrdersTable" autoHeight />
+                                        <Typography id="myOrdersHeading">{user.name}'s Orders</Typography>
+                                    </> : <h3 style={{ textAlign: "center" }}>No Order Found</h3>
+                            }
 
                         </div>
                     </>

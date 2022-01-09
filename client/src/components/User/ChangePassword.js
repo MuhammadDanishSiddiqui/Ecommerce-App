@@ -40,33 +40,36 @@ function ChangePassword() {
     }
 
     return (
-        <div className="register_user_wrapper">
-            <h3 style={{ backgroundColor: "blue", color: "white", width: "100%", textAlign: "center", padding: "10px", fontSize: "25px", marginBottom: "20px" }}>Change Password</h3>
-            <div>
-                <h3>Old Password:</h3>
-                <input disabled={loading} placeholder="Enter Old Password" style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} type="password" value={oldPassword} required onChange={e => setOldPassword(e.target.value)} />
-                <br />
-            </div>
-            <div>
-                <h3>New Password:</h3>
-                <input disabled={loading} placeholder="Enter New Password" style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} type="password" value={newPassword} required onChange={e => setNewPassword(e.target.value)} />
-                <br />
-            </div>
-            <div>
-                <h3>Confirm Password:</h3>
-                <input disabled={loading} placeholder="Enter Confirm Password" style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} type="password" value={confirmPassword} required onChange={e => setConfirmPassword(e.target.value)} />
-                <br />
-            </div>
-            {
-                error ? <small style={{ color: "red" }}>{error}</small> : null
-            }
-            <div style={{ marginTop: "10px" }}>
+        <>
+            <div className="extraUser"></div>
+            <div className="register_user_wrapper">
+                <h3 style={{ backgroundColor: "blue", color: "white", width: "100%", textAlign: "center", padding: "10px", fontSize: "25px", marginBottom: "20px" }}>Change Password</h3>
+                <div>
+                    <h3>Old Password:</h3>
+                    <input disabled={loading} placeholder="Enter Old Password" style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} type="password" value={oldPassword} required onChange={e => setOldPassword(e.target.value)} />
+                    <br />
+                </div>
+                <div>
+                    <h3>New Password:</h3>
+                    <input disabled={loading} placeholder="Enter New Password" style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} type="password" value={newPassword} required onChange={e => setNewPassword(e.target.value)} />
+                    <br />
+                </div>
+                <div>
+                    <h3>Confirm Password:</h3>
+                    <input disabled={loading} placeholder="Enter Confirm Password" style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} type="password" value={confirmPassword} required onChange={e => setConfirmPassword(e.target.value)} />
+                    <br />
+                </div>
                 {
-                    loading ? <CircularProgress /> : <button onClick={updatePassword} style={{ backgroundColor: "black", color: "white", padding: "10px", display: "inline-block", outline: "none", border: "1px solid black", width: "250px", cursor: "pointer" }}>Change</button>
+                    error ? <small style={{ color: "red" }}>{error}</small> : null
                 }
+                <div style={{ marginTop: "10px" }}>
+                    {
+                        loading ? <CircularProgress /> : <button onClick={updatePassword} style={{ backgroundColor: "black", color: "white", padding: "10px", display: "inline-block", outline: "none", border: "1px solid black", width: "250px", cursor: "pointer" }}>Change</button>
+                    }
 
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

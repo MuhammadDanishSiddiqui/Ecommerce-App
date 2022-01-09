@@ -12,7 +12,6 @@ import Pagination from "react-js-pagination"
 import Slider from "@material-ui/core/Slider"
 import Typography from "@material-ui/core/Typography"
 import { makeStyles } from '@material-ui/core/styles';
-// import ReactStars from "react-rating-stars-component"
 import { Rating } from "@material-ui/lab"
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +31,7 @@ function Products() {
     const [category, setCategory] = useState("")
     const [ratings, setRatings] = useState(0)
 
-    const { products, loading, error, productsCount, resultPerPage, filteredProductsCount } = useSelector(state => state.products)
+    const { products, loading, error, resultPerPage, filteredProductsCount } = useSelector(state => state.products)
     useEffect(() => {
         if (error) {
             toast.error(error.message, {
@@ -43,14 +42,6 @@ function Products() {
     }, [dispatch, error, keyword, currentPage, price, category, ratings])
 
     let count = filteredProductsCount
-    // const options = {
-    //     edit: true,
-    //     color: "black",
-    //     activeColor: "yellow",
-    //     size: 25,
-    //     value: ratings,
-    //     isHalf: true
-    // }
     const options = {
         value: ratings,
         precision: 0.5
@@ -85,15 +76,6 @@ function Products() {
 
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography style={{ marginRight: "10px" }}>Ratings</Typography>
-                    {/* <Slider className={classes.test}
-                        value={ratings}
-                        onChange={(e, newRating) => setRatings(newRating)}
-                        valueLabelDisplay="auto"
-                        aria-labelledby="continuous-slider"
-                        min={0}
-                        max={5}
-                    /> */}
-                    {/* <ReactStars {...options} onChange={e => setRatings(e)} /> */}
                     <Rating {...options} onChange={e => setRatings(Number(e.target.value))} />
                 </div>
 
@@ -121,8 +103,6 @@ function Products() {
                     activeLinkClass="pageLinkActive"
                 />
             </div>}
-
-
             <ToastContainer />
         </>
 

@@ -95,8 +95,14 @@ function OrderList() {
             <div className="dashboard">
                 <Sidebar />
                 <div className="productListContainer">
-                    <h1 id="productListHeading">All Orders</h1>
-                    <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight />
+                    {
+                        orders && orders[0] ? <>
+                            <h1 id="productListHeading">All Orders</h1>
+                            <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight /></> : <h3 style={{
+                                margin: "90px",
+                                textAlign: "center"
+                            }}>No Order Found</h3>
+                    }
                 </div>
             </div>
         </>

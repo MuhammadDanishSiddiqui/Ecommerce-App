@@ -7,7 +7,6 @@ import { loginUser, clearErrors, getUserProfile } from "../../config/redux/actio
 import { useNavigate } from 'react-router-dom'
 import axios from "axios"
 
-
 function Login({ isLoading }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -28,12 +27,10 @@ function Login({ isLoading }) {
         if (isAuth) {
             return navigate(localStorage.getItem("currentPath") == "/login" ? "/profile" : localStorage.getItem("currentPath"))
         }
-
         if (token) {
             localStorage.setItem("token", token)
             axios.defaults.headers.common['Authorization'] = "Bearer " + token
             dispatch(getUserProfile())
-
         }
     }, [dispatch, token, isAuth])
     return (

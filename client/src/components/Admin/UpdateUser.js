@@ -76,7 +76,6 @@ function UpdateUser() {
 
     return (
         <>
-            <div className="extraDashProNew"></div>
             <div className="dashboard">
                 <Sidebar />
                 <div className="newProductContainer">

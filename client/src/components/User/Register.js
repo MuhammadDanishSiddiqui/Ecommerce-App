@@ -7,8 +7,6 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { registerUser, clearErrors } from "../../config/redux/actions/userActions"
 import { useNavigate } from 'react-router-dom'
 
-
-
 function Register({ isLoading }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -25,7 +23,6 @@ function Register({ isLoading }) {
                     setNewUser({ ...newUser, avatar: reader.result })
                 }
             }
-
             reader.readAsDataURL(e.target.files[0])
             return
         }

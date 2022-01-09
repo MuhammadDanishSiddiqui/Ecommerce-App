@@ -35,9 +35,9 @@ function Home() {
             {loading ? <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "20px" }}>
                 <CircularProgress />
             </div> : <Grid container justifyContent="center" style={{ padding: "20px" }}>
-                    {products && products.map(product => {
+                    {products && products[0] ? products.map(product => {
                         return <Product key={product._id} product={product} />
-                    })}
+                    }) : <h4>No Product Found</h4>}
                 </Grid>}
             <ToastContainer />
         </>
