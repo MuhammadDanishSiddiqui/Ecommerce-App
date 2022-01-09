@@ -177,8 +177,8 @@ router.post("/password/forgot", async (req, res) => {
     const resetToken = user.generateResetPasswordToken()
     await user.save()
     // const resetPasswordUrl = `http://localhost/api/v1/password/reset/${resetToken}`
-    // const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`
-    const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`
+    const resetPasswordUrl = `${req.protocol}://${req.get("host")}/password/reset/${resetToken}`
+    // const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`
     const message = `Your password reset token is : \n\n ${resetPasswordUrl} \n\n If you have not requested this email then please ignore it.`
     try {
         await sendEmail({
