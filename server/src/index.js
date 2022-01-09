@@ -28,6 +28,16 @@ app.use("/api", productRouter)
 app.use("/api", orderRouter)
 app.use("/api", paymentRouter)
 
+const staticPath = path.join(__dirname, "../../client/build")
+
+
+if (process.env.NODE_ENV == "production") {
+    app.use(express.static(staticPath));
+    app.get("*", (req, res) => {
+        res.sendfile(path.resolve(__dirname, "../../client", "build", "index.html"))
+    })
+}
+
 app.listen(port, () => {
     console.log("server is up at port " + port)
 })
