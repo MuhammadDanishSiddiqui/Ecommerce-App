@@ -28,13 +28,13 @@ app.use("/api", productRouter)
 app.use("/api", orderRouter)
 app.use("/api", paymentRouter)
 
-const staticPath = path.join(__dirname, "../../client/build")
+const staticPath = path.join(__dirname, "../client/build")
 
 
 if (process.env.NODE_ENV == "production") {
     app.use(express.static(staticPath));
     app.get("*", (req, res) => {
-        res.sendfile(path.resolve(__dirname, "../../client", "build", "index.html"))
+        res.sendfile(path.resolve(__dirname, "../client", "build", "index.html"))
     })
 }
 
