@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import "./newProduct.css"
 import { useSelector, useDispatch } from "react-redux"
-import { clearErrors, createProduct } from "../../config/redux/actions/productAction"
 import { Button } from "@material-ui/core"
 import Sidebar from "./Sidebar"
 import { useNavigate } from "react-router-dom"
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { useParams } from "react-router-dom"
-import { getUserDetail } from "../../config/redux/actions/userActions"
+import { getUserDetail, clearErrors } from "../../config/redux/actions/userActions"
 import MailOutlineIcon from "@material-ui/icons/MailOutline"
 import PersonIcon from "@material-ui/icons/Person"
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser"
@@ -18,7 +17,7 @@ function UpdateUser() {
     const { id } = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { loading, error, user } = useSelector(state => state.userDetail)
+    const { error, user } = useSelector(state => state.userDetail)
     const [name, setName] = useState("")
     const [email, setEmail] = useState(0)
     const [role, setRole] = useState("")
@@ -37,7 +36,7 @@ function UpdateUser() {
             dispatch(clearErrors())
         }
 
-    }, [dispatch, alert])
+    }, [dispatch, id, error])
 
     useEffect(() => {
         if (user) {
@@ -86,14 +85,14 @@ function UpdateUser() {
                             <input type="text" placeholder="Name" required value={name} onChange={e => setName(e.target.value)} />
                         </div>
                         {
-                            updateError ?.errors ?.name && <span style={{ color: "red" }}>{updateError ?.errors ?.name.message}</span>
+                            updateError && updateError.errors && updateError.errors.name && <span style={{ color: "red" }}>{updateError.errors.name.message}</span>
                         }
                         <div>
                             <MailOutlineIcon />
                             <input type="email" placeholder="Email" required value={email} onChange={e => setEmail(e.target.value)} />
                         </div>
                         {
-                            updateError ?.errors ?.email && <span style={{ color: "red" }}>{updateError ?.errors ?.email.message}</span>
+                            updateError && updateError.errors && updateError.errors.email && <span style={{ color: "red" }}>{updateError.errors.email.message}</span>
                         }
 
                         <div>
@@ -106,11 +105,11 @@ function UpdateUser() {
                             </select>
                         </div>
                         {
-                            updateError ?.errors ?.role && <span style={{ color: "red" }}>{updateError ?.errors ?.role.message}</span>
+                            updateError && updateError.errors && updateError.errors.role && <span style={{ color: "red" }}>{updateError.errors.role.message}</span>
                         }
 
                         {
-                            isLoading ? <Button style={{ backgroundColor: "white" }} id="createProductButton" type="submit" disabled={isLoading ? true : false || role == "" ? true : false}>{<CircularProgress />}</Button> : <Button id="createProductButton" type="submit" disabled={isLoading ? true : false || role == "" ? true : false}>Update</Button>
+                            isLoading ? <Button style={{ backgroundColor: "white" }} id="createProductButton" type="submit" disabled={isLoading ? true : false || role === "" ? true : false}>{<CircularProgress />}</Button> : <Button id="createProductButton" type="submit" disabled={isLoading ? true : false || role === "" ? true : false}>Update</Button>
                         }
 
 

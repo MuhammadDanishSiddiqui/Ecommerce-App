@@ -9,10 +9,8 @@ import EditIcon from "@material-ui/icons/Edit"
 import DeleteIcon from "@material-ui/icons/Delete"
 import Sidebar from "./Sidebar"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
 
 function OrderList() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { error, orders } = useSelector(state => state.allOrders)
     const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +29,7 @@ function OrderList() {
         }
         dispatch(getAllOrders())
 
-    }, [dispatch, alert, error])
+    }, [dispatch, error])
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
         {

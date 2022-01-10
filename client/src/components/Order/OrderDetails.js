@@ -18,7 +18,7 @@ function OrderDetails() {
         }
         if (isAuth)
             dispatch(getOrderDetails(id))
-    }, [dispatch, error, alert, isAuth])
+    }, [dispatch, error, isAuth, id])
     return (
         <>
             {
@@ -48,7 +48,7 @@ function OrderDetails() {
                                 <Typography>Payment</Typography>
                                 <div className="orderDetailsContainerBox">
                                     <div>
-                                        <p className={order.paymentInfo && order.paymentInfo.status == "succeeded" ? "greenColor" : "redColor"}>{order.paymentInfo && order.paymentInfo.status == "succeeded" ? "PAID" : "NOT PAID"}</p>
+                                        <p className={order.paymentInfo && order.paymentInfo.status === "succeeded" ? "greenColor" : "redColor"}>{order.paymentInfo && order.paymentInfo.status === "succeeded" ? "PAID" : "NOT PAID"}</p>
                                     </div>
                                     <div>
                                         <p>Amount:</p>
@@ -60,7 +60,7 @@ function OrderDetails() {
                                 <Typography>Order Status</Typography>
                                 <div className="orderDetailsContainerBox">
                                     <div>
-                                        <p className={order.orderStatus && order.orderStatus == "Delievered" ? "greenColor" : "redColor"}>{order.orderStatus && order.orderStatus}</p>
+                                        <p className={order.orderStatus && order.orderStatus === "Delievered" ? "greenColor" : "redColor"}>{order.orderStatus && order.orderStatus}</p>
                                     </div>
                                 </div>
                             </div>

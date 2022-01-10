@@ -14,7 +14,7 @@ const registerUser = (body) => async (dispatch) => {
         dispatch({ type: "REGISTER_SUCCESS", payload: response.data })
     } catch (error) {
         if (!error.response) {
-            return dispatch({ type: "REGISTER_FAIL", payload: "No internet connection" })
+            return dispatch({ type: "REGISTER_FAIL", payload: { error: "No Internet Connection." } })
         }
         dispatch({ type: "REGISTER_FAIL", payload: error.response.data })
     }
@@ -34,7 +34,7 @@ const loginUser = (body) => async (dispatch) => {
         dispatch({ type: "LOGIN_SUCCESS", payload: response.data })
     } catch (error) {
         if (!error.response) {
-            return dispatch({ type: "LOGIN_FAIL", payload: "No internet connection" })
+            return dispatch({ type: "LOGIN_FAIL", payload: { error: "No Internet Connection." } })
         }
         dispatch({ type: "LOGIN_FAIL", payload: error.response.data })
     }
@@ -53,7 +53,7 @@ const getUserProfile = () => async (dispatch) => {
         dispatch({ type: "PROFILE_SUCCESS", payload: response.data })
     } catch (error) {
         if (!error.response) {
-            return dispatch({ type: "PROFILE_FAIL", payload: "No internet connection" })
+            return dispatch({ type: "PROFILE_FAIL", payload: { error: "No Internet Connection." } })
         }
         dispatch({ type: "PROFILE_FAIL", payload: error.response.data })
     }
@@ -72,7 +72,7 @@ const getAllUsers = () => async (dispatch) => {
         dispatch({ type: "ALL_USERS_SUCCESS", payload: response.data })
     } catch (error) {
         if (!error.response) {
-            return dispatch({ type: "ALL_USERS_FAIL", payload: "No internet connection" })
+            return dispatch({ type: "ALL_USERS_FAIL", payload: { error: "No Internet Connection." } })
         }
         dispatch({ type: "ALL_USERS_FAIL", payload: error.response.data })
     }
@@ -92,7 +92,7 @@ const getUserDetail = (id) => async (dispatch) => {
         dispatch({ type: "USER_DETAIL_SUCCESS", payload: response.data })
     } catch (error) {
         if (!error.response) {
-            return dispatch({ type: "USER_DETAIL_FAIL", payload: "No internet connection" })
+            return dispatch({ type: "USER_DETAIL_FAIL", payload: { error: "No Internet Connection." } })
         }
         dispatch({ type: "USER_DETAIL_FAIL", payload: error.response.data })
     }

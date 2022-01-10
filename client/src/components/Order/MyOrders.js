@@ -16,14 +16,13 @@ function MyOrders() {
     useEffect(() => {
         if (error) {
             alert(error)
-            console.log(error)
             dispatch(clearErrors())
         }
         if (isAuth)
             dispatch(myOrders())
 
 
-    }, [dispatch, error, alert, isAuth])
+    }, [dispatch, error, isAuth])
 
 
     const columns = [
@@ -48,7 +47,7 @@ function MyOrders() {
     ]
     const rows = []
 
-    orders && orders.forEach((item, index) => {
+    orders && orders.forEach((item) => {
         rows.push({
             itemsQty: item.orderItems.length,
             id: item._id,
@@ -61,7 +60,7 @@ function MyOrders() {
     return (
         <>
             {
-                loading || isAuth == false ?
+                loading || isAuth === false ?
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh", width: "100%" }}>
                         <CircularProgress />
                     </div>

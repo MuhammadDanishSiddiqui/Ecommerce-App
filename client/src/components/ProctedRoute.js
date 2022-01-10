@@ -6,8 +6,7 @@ function ProctedRoute({ children, redirectTo, isAdmin }) {
     const { loading, isAuth, user } = useSelector(state => state.user)
 
     return (
-        // localStorage.getItem("token") ? children : <Navigate to={redirectTo} />
-        loading == false && (isAuth == false ? <Navigate to={redirectTo} /> : isAdmin == true && user.role != "admin" ? <Navigate to={"/"} /> : children)
+        loading === false && (isAuth === false ? <Navigate to={redirectTo} /> : isAdmin === true && user.role !== "admin" ? <Navigate to={"/"} /> : children)
     )
 }
 

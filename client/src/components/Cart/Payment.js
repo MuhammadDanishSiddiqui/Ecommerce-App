@@ -29,7 +29,7 @@ function Payment() {
             alert(error)
             dispatch(clearErrors())
         }
-    }, [error, dispatch, alert])
+    }, [error, dispatch])
 
     const paymentData = {
         amount: Math.round(orderInfo.totalPrice * 100)
@@ -79,7 +79,7 @@ function Payment() {
                 alert(result.error.message)
             }
             else {
-                if (result.paymentIntent.status == "succeeded") {
+                if (result.paymentIntent.status === "succeeded") {
                     order.paymentInfo = {
                         id: result.paymentIntent.id,
                         status: result.paymentIntent.status

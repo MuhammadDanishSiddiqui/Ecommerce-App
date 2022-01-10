@@ -6,15 +6,15 @@ import { useDispatch } from "react-redux"
 import Routes from "./config/Routess"
 import axios from 'axios';
 
+if (localStorage.getItem("token"))
+  axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem("token")
+
 
 function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem("token")
-      dispatch(getUserProfile())
-    }
+    dispatch(getUserProfile())
   }, [dispatch])
 
   return (

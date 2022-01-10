@@ -36,7 +36,7 @@ function NewProduct() {
             dispatch({ type: "NEW_PRODUCT_RESET" })
             navigate("/admin/dashboard")
         }
-    }, [dispatch, alert, message, navigate])
+    }, [dispatch, message, navigate, error])
 
     const createProductSubmitHandler = (e) => {
         e.preventDefault()
@@ -60,7 +60,7 @@ function NewProduct() {
         files.forEach(file => {
             const reader = new FileReader()
             reader.onload = () => {
-                if (reader.readyState == 2) {
+                if (reader.readyState === 2) {
                     setImagesPreview(old => {
                         return [...old, reader.result]
                     })
@@ -88,14 +88,14 @@ function NewProduct() {
                             <input type="text" placeholder="Product Name" required value={name} onChange={e => setName(e.target.value)} />
                         </div>
                         {
-                            error ?.errors ?.name && <span style={{ color: "red" }}>{error ?.errors ?.name.message}</span>
+                            error && error.errors && error.errors.name && <span style={{ color: "red" }}>{error.errors.name.message}</span>
                         }
                         <div>
                             <AttachMoneyIcon />
                             <input type="number" placeholder="Price" required value={price} onChange={e => setPrice(e.target.value)} />
                         </div>
                         {
-                            error ?.errors ?.price && <span style={{ color: "red" }}>{error ?.errors ?.price.message}</span>
+                            error && error.errors && error.errors.price && <span style={{ color: "red" }}>{error.errors.price.message}</span>
                         }
                         <div>
                             <DescriptionIcon />
@@ -103,7 +103,7 @@ function NewProduct() {
                             </textarea>
                         </div>
                         {
-                            error ?.errors ?.description && <span style={{ color: "red" }}>{error ?.errors ?.description.message}</span>
+                            error && error.errors && error.errors.description && <span style={{ color: "red" }}>{error.errors.description.message}</span>
                         }
                         <div>
                             <AccountTreeIcon />
@@ -115,7 +115,7 @@ function NewProduct() {
                             </select>
                         </div>
                         {
-                            error ?.errors ?.category && <span style={{ color: "red" }}>{error ?.errors ?.category.message}</span>
+                            error && error.errors && error.errors.category && <span style={{ color: "red" }}>{error.errors.category.message}</span>
                         }
                         <div>
                             <StorageIcon />
@@ -127,7 +127,7 @@ function NewProduct() {
                             <input type="file" name="avatar" required accept="image/*" multiple onChange={createProductImagesChange} />
                         </div>
                         {
-                            error ?.errors ?.images && <span style={{ color: "red" }}>{error ?.errors ?.images.message}</span>
+                            error && error.errors && error.errors.images && <span style={{ color: "red" }}>{error.errors.images.message}</span>
                         }
 
                         <div className="createProductFormImage">
@@ -136,7 +136,7 @@ function NewProduct() {
                             })}
                         </div>
                         {
-                            error ?.error && <span style={{ color: "red" }}>{error ?.error}</span>
+                            error && error.error && <span style={{ color: "red" }}>{error.error}</span>
                         }
 
                         {

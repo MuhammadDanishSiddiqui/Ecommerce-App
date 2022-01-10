@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import "./newProduct.css"
 import { useSelector, useDispatch } from "react-redux"
-import { clearErrors, getProductDetail } from "../../config/redux/actions/productAction"
+import { getProductDetail } from "../../config/redux/actions/productAction"
 import { Button } from "@material-ui/core"
 import AccountTreeIcon from "@material-ui/icons/AccountTree"
 import DescriptionIcon from "@material-ui/icons/Description"
@@ -18,7 +18,7 @@ function UpdateProduct() {
     const { id } = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { error, product } = useSelector(state => state.productDetail)
+    const { product } = useSelector(state => state.productDetail)
     const [name, setName] = useState("")
     const [price, setPrice] = useState(0)
     const [description, setDescription] = useState("")
@@ -42,7 +42,7 @@ function UpdateProduct() {
             setStock(product.stock)
             setOldImages(product.images)
         }
-    }, [dispatch])
+    }, [dispatch, id, product])
 
     const updateProductSubmitHandler = async (e) => {
         setUpdateError(null)
@@ -86,7 +86,7 @@ function UpdateProduct() {
         files.forEach(file => {
             const reader = new FileReader()
             reader.onload = () => {
-                if (reader.readyState == 2) {
+                if (reader.readyState === 2) {
                     setImagesPreview(old => {
                         return [...old, reader.result]
                     })
@@ -114,14 +114,14 @@ function UpdateProduct() {
                             <input type="text" placeholder="Product Name" required value={name} onChange={e => setName(e.target.value)} />
                         </div>
                         {
-                            updateError ?.errors ?.name && <span style={{ color: "red" }}>{updateError ?.errors ?.name.message}</span>
+                            updateError && updateError.errors && updateError.errors.name && <span style={{ color: "red" }}>{updateError.errors.name.message}</span>
                         }
                         <div>
                             <AttachMoneyIcon />
                             <input type="number" placeholder="Price" required value={price} onChange={e => setPrice(e.target.value)} />
                         </div>
                         {
-                            updateError ?.errors ?.price && <span style={{ color: "red" }}>{updateError ?.errors ?.price.message}</span>
+                            updateError && updateError.errors && updateError.errors.price && <span style={{ color: "red" }}>{updateError.errors.price.message}</span>
                         }
                         <div>
                             <DescriptionIcon />
@@ -129,7 +129,7 @@ function UpdateProduct() {
                             </textarea>
                         </div>
                         {
-                            updateError ?.errors ?.description && <span style={{ color: "red" }}>{updateError ?.errors ?.description.message}</span>
+                            updateError && updateError.errors && updateError.errors.description && <span style={{ color: "red" }}>{updateError.errors.description.message}</span>
                         }
                         <div>
                             <AccountTreeIcon />
@@ -141,7 +141,7 @@ function UpdateProduct() {
                             </select>
                         </div>
                         {
-                            updateError ?.errors ?.category && <span style={{ color: "red" }}>{updateError ?.errors ?.category.message}</span>
+                            updateError && updateError.errors && updateError.errors.category && <span style={{ color: "red" }}>{updateError.errors.category.message}</span>
                         }
                         <div>
                             <StorageIcon />
@@ -153,7 +153,7 @@ function UpdateProduct() {
                             <input type="file" name="avatar" required accept="image/*" multiple onChange={createProductImagesChange} />
                         </div>
                         {
-                            updateError ?.errors ?.images && <span style={{ color: "red" }}>{updateError ?.errors ?.images.message}</span>
+                            updateError && updateError.errors && updateError.errors.images && <span style={{ color: "red" }}>{updateError.errors.images.message}</span>
                         }
 
                         <div className="createProductFormImage">
@@ -168,7 +168,7 @@ function UpdateProduct() {
                             })}
                         </div>
                         {
-                            updateError ?.error && <span style={{ color: "red" }}>{updateError ?.error}</span>
+                            updateError && updateError.error && <span style={{ color: "red" }}>{updateError.error}</span>
                         }
 
                         {

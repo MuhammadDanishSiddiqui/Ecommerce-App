@@ -10,7 +10,7 @@ import axios from "axios"
 function Login({ isLoading }) {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { loading, error, message, token } = useSelector(state => state.userLogin)
+    const { loading, error, token } = useSelector(state => state.userLogin)
     const { isAuth } = useSelector(state => state.user)
     const [user, setUser] = useState({ password: "", email: "" })
     function handleChange(e) {
@@ -25,14 +25,14 @@ function Login({ isLoading }) {
 
     useEffect(() => {
         if (isAuth) {
-            return navigate(localStorage.getItem("currentPath") == "/login" ? "/profile" : localStorage.getItem("currentPath"))
+            return navigate(localStorage.getItem("currentPath") === "/login" ? "/profile" : localStorage.getItem("currentPath"))
         }
         if (token) {
             localStorage.setItem("token", token)
             axios.defaults.headers.common['Authorization'] = "Bearer " + token
             dispatch(getUserProfile())
         }
-    }, [dispatch, token, isAuth])
+    }, [dispatch, token, isAuth, navigate])
     return (
 
         <>
@@ -47,15 +47,15 @@ function Login({ isLoading }) {
                             <h3 style={{ backgroundColor: "blue", color: "white", width: "100%", textAlign: "center", padding: "10px", fontSize: "25px", marginBottom: "20px" }}>Login</h3>
                             <input disabled={loading} type="email" value={user.email} name="email" placeholder="Enter your email" onChange={handleChange} />
                             {
-                                error ?.errors ?.email && <small style={{ color: "red" }}> {error ?.errors ?.email.message} </small> 
-                }
+                                error && error.errors && error.errors.email && <small style={{ color: "red" }}> {error.errors.email.message} </small>
+                            }
                             <input disabled={loading} type="password" value={user.password} name="password" placeholder="Enter your password" onChange={handleChange} />
                             {
-                                error ?.errors ?.password && <small style={{ color: "red", marginBottom: "10px" }}> {error ?.errors ?.password.message} </small> 
-                }
+                                error && error.errors && error.errors.password && <small style={{ color: "red", marginBottom: "10px" }}> {error.errors.password.message} </small>
+                            }
                             {
-                                error ?.error && <small style={{ color: "red", marginBottom: "10px" }}> {error.error} </small> 
-                }
+                                error && error.error && <small style={{ color: "red", marginBottom: "10px" }}> {error.error} </small>
+                            }
                             {
                                 loading ? <CircularProgress /> : <button>Submit</button>
                             }

@@ -2,9 +2,7 @@ import React from 'react'
 import {
     Link
 } from "react-router-dom";
-// import ReactStars from "react-rating-stars-component"
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -54,15 +52,11 @@ function Product({ product }) {
                         {product.name}
                     </Typography>
                     <div className="rating">
-                        {/* <ReactStars {...options} /><span>({product.numOfReviews} Reviews)</span> */}
                         <Rating {...options} /><span>({product.numOfReviews} Reviews)</span>
 
                     </div>
-                    {/* <Typography className="desc" style={{ maxheight: "100px", overflow: "auto" }} gutterBottom variant="body2" color="textSecondary" component="p">
-                        {product.description}
-                    </Typography> */}
                     <Typography variant="h5" component="h2">
-                        $ {product.price}
+                        ${product.price}
                     </Typography>
                 </CardContent>
             </CardActionArea>
@@ -72,8 +66,6 @@ function Product({ product }) {
                         View
                   </Button>
                 </div>
-
-
             </CardActions>
         </Grid>
 

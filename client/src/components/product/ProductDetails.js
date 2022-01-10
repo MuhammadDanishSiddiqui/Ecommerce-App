@@ -133,7 +133,7 @@ function ProductDetails() {
     const [comment, setComment] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
-    const { message, error: reviewError, loading: reviewLoading } = useSelector(state => state.newReview)
+    const { message, error: reviewError } = useSelector(state => state.newReview)
 
     let { id } = useParams()
     useEffect(() => {
@@ -147,7 +147,7 @@ function ProductDetails() {
 
         }
         dispatch(getProductDetail(id))
-    }, [dispatch, id, alert])
+    }, [dispatch, id, error])
 
     useEffect(() => {
         if (reviewError) {
@@ -162,7 +162,7 @@ function ProductDetails() {
             setIsLoading(false)
             dispatch({ type: "NEW_REVIEW_RESET" })
         }
-    }, [dispatch, reviewError, alert, message])
+    }, [dispatch, reviewError, message])
     const options = {
         value: product.ratings,
         readOnly: true,
@@ -191,7 +191,7 @@ function ProductDetails() {
                 <Grid className={classes.leftSide} item sm={6} xs={12}>
 
                     <Carousel className={classes.carousel_wrapper}>
-                        {product.images && product.images.map((item, i) => {
+                        {product.images && product.images[0] && product.images.map((item, i) => {
                             return <img key={i} style={{ width: "100%", height: "420px" }} src={item.url} alt={`${i} Slide`} />
                         })}
                     </Carousel>

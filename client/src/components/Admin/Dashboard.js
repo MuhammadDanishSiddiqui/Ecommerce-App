@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Sidebar from "./Sidebar"
 import "./Dashboard.css"
 import { clearErrors, getAdminProducts } from "../../config/redux/actions/productAction"
-import { Typography } from '@material-ui/core'
 import { Link } from "react-router-dom"
 import { Line, Doughnut } from "react-chartjs-2"
 import Chart from 'chart.js/auto'
@@ -32,11 +31,11 @@ function Dashboard() {
         dispatch(getAllOrders())
         dispatch(getAllUsers())
 
-    }, [dispatch, alert, error])
+    }, [dispatch, error])
 
     let outOfStock = 0
     products && products.forEach(item => {
-        if (item.stock == 0)
+        if (item.stock === 0)
             outOfStock += 1
     })
 

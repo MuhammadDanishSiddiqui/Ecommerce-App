@@ -1,10 +1,8 @@
 import React from 'react'
 import "./Cart.css"
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Link } from "react-router-dom"
-import Paper from '@material-ui/core/Paper';
 import { useSelector, useDispatch } from "react-redux"
 import { removeItemsFromCart, addItemsToCart } from "../../config/redux/actions/cartActions"
 import { useNavigate } from "react-router-dom"
@@ -39,16 +37,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const item = {
-    name: "testing",
-    image: "https://mobilemall.pk/public_html/images/no_image.png",
-    price: 200,
-    product: "fake",
-    stock: 5,
-    quantity: 1
-}
-
-
 function Cart() {
     const navigate = useNavigate()
     const classes = useStyles()
@@ -81,7 +69,7 @@ function Cart() {
             </div>
 
             {
-                cartItems.length == 0 ? <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Nothing in Your Cart</h3> : <>
+                cartItems.length === 0 ? <h3 style={{ textAlign: "center", marginBottom: "10px" }}>Nothing in Your Cart</h3> : <>
                     <Typography variant="h4" style={{ textAlign: "center", marginBottom: "10px" }}>Your Cart</Typography>
                     {
                         cartItems.map(item => {

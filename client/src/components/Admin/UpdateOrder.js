@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Typography, CircularProgress, Button } from "@material-ui/core"
 import Sidebar from "./Sidebar"
 import { getOrderDetails, clearErrors } from "../../config/redux/actions/orderActions"
@@ -10,7 +10,6 @@ import axios from "axios"
 function UpdateOrder() {
     const [status, setStatus] = useState("")
     const { id } = useParams()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { order, error, loading } = useSelector(state => state.orderDetails)
     const { isAuth } = useSelector(state => state.user)
@@ -49,7 +48,7 @@ function UpdateOrder() {
         }
         if (isAuth)
             dispatch(getOrderDetails(id))
-    }, [dispatch, error, alert, isAuth])
+    }, [dispatch, error, isAuth, id])
 
     return (
         <>
@@ -81,7 +80,7 @@ function UpdateOrder() {
                                         <Typography variant="h5">Payment</Typography>
                                         <div className="orderDetailsContainerBox">
                                             <div>
-                                                <p className={order.paymentInfo && order.paymentInfo.status == "succeeded" ? "greenColor" : "redColor"}>{order.paymentInfo && order.paymentInfo.status == "succeeded" ? "PAID" : "NOT PAID"}</p>
+                                                <p className={order.paymentInfo && order.paymentInfo.status === "succeeded" ? "greenColor" : "redColor"}>{order.paymentInfo && order.paymentInfo.status === "succeeded" ? "PAID" : "NOT PAID"}</p>
                                             </div>
                                             <div>
                                                 <p>Amount:</p>
@@ -93,7 +92,7 @@ function UpdateOrder() {
                                         <Typography variant="h5">Order Status</Typography>
                                         <div className="orderDetailsContainerBox">
                                             <div>
-                                                <p className={order.orderStatus && order.orderStatus == "Delievered" ? "greenColor" : "redColor"}>{order.orderStatus && order.orderStatus}</p>
+                                                <p className={order.orderStatus && order.orderStatus === "Delievered" ? "greenColor" : "redColor"}>{order.orderStatus && order.orderStatus}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -112,15 +111,15 @@ function UpdateOrder() {
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{ display: order.orderStatus == "Delievered" ? "none" : "block" }}>
+                                <div style={{ display: order.orderStatus === "Delievered" ? "none" : "block" }}>
                                     <form className="createProductForm" onSubmit={processOrder}>
                                         <Typography variant="h5">Process Order</Typography>
                                         <div>
                                             <AccountTreeIcon />
                                             <select value={status} onChange={e => setStatus(e.target.value)}>
                                                 <option value="">Choose Category</option>
-                                                {order.orderStatus == "Processing" && <option value="Shipped">Shipped</option>}
-                                                {order.orderStatus == "Shipped" && <option value="Delievered">Delievered</option>}
+                                                {order.orderStatus === "Processing" && <option value="Shipped">Shipped</option>}
+                                                {order.orderStatus === "Shipped" && <option value="Delievered">Delievered</option>}
 
                                             </select>
                                         </div>
@@ -129,7 +128,7 @@ function UpdateOrder() {
                                         }
 
                                         {
-                                            isLoading ? <Button style={{ backgroundColor: "white" }} id="createProductButton" type="submit" disabled={isLoading ? true : false || status == "" ? true : false}>{<CircularProgress />}</Button> : <Button id="createProductButton" type="submit" disabled={isLoading ? true : false || status == "" ? true : false}>Process</Button>
+                                            isLoading ? <Button style={{ backgroundColor: "white" }} id="createProductButton" type="submit" disabled={isLoading ? true : false || status === "" ? true : false}>{<CircularProgress />}</Button> : <Button id="createProductButton" type="submit" disabled={isLoading ? true : false || status === "" ? true : false}>Process</Button>
                                         }
 
 

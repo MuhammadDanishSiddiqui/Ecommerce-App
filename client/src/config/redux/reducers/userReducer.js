@@ -79,7 +79,7 @@ const profileReducer = (state = { user: {} }, action) => {
                 loading: false,
                 error: action.payload,
                 isAuth: false,
-                user: ""
+                user: {}
             }
         case "CLEAR_ERRORS":
             return {

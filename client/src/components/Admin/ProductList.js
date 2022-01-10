@@ -31,7 +31,7 @@ function ProductList() {
         }
         dispatch(getAdminProducts())
 
-    }, [dispatch, alert, error])
+    }, [dispatch, error])
     const columns = [
         {
             field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5

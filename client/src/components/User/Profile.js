@@ -13,18 +13,18 @@ function Profile() {
     const { user, isAuth, loading } = useSelector(state => state.user)
     const [name, setName] = useState(user.name)
     const [email, setEmail] = useState(user.email)
-    const [avatarPreview, setAvatarPreview] = useState(user ?.avatar ?.url ? user.avatar.url : "")
+    const [avatarPreview, setAvatarPreview] = useState(user.avatar && user.avatar.url ? user.avatar.url : "")
     const [isEdit, setIsEdit] = useState(false)
     const [errors, setErrors] = useState({ name: "", email: "", avatar: "" })
     const [isLoading, setIsLoading] = useState(false)
 
 
     useEffect(() => {
-        if (!isAuth) {
+        if (isAuth === false) {
             navigate('/login');
         }
 
-    }, [navigate, isAuth, loading])
+    }, [navigate, isAuth])
 
 
 
@@ -54,11 +54,11 @@ function Profile() {
             setErrors({ name: "", email: "", avatar: "" })
         } catch (error) {
             setIsLoading(false)
-            if (error ?.response ?.data ?.errors ?.name) {
-                setErrors({ ...errors, name: error ?.response ?.data ?.errors ?.name.message})
+            if (error.response && error.response.data && error.response.data.errors && error.response.data.errors.name) {
+                setErrors({ ...errors, name: error.response.data.errors.name.message })
             }
-            if (error ?.response ?.data ?.errors ?.email) {
-                setErrors({ ...errors, email: error ?.response ?.data ?.errors ?.email.message})
+            if (error.response && error.response.data && error.response.data.errors && error.response.data.errors.email) {
+                setErrors({ ...errors, email: error.response.data.errors.email.message })
             }
 
         }
@@ -79,13 +79,12 @@ function Profile() {
                             <input type="file" accept="image/*" disabled={!isEdit} id="avatar" hidden onChange={async (e) => {
                                 const reader = new FileReader()
                                 reader.onload = () => {
-                                    if (reader.readyState == 2) {
+                                    if (reader.readyState === 2) {
                                         setAvatarPreview(reader.result)
                                     }
                                 }
                                 reader.readAsDataURL(e.target.files[0])
                             }} />
-                            {/* <Link to="/me/update" className="edit_btn">Edit Profile</Link> */}
                             {
                                 !isEdit ? <button className="edit_btn" onClick={() => setIsEdit(true)}>Edit Profile</button> :
                                     <>
@@ -94,7 +93,7 @@ function Profile() {
                                             setIsEdit(false)
                                             setName(user.name)
                                             setEmail(user.email)
-                                            setAvatarPreview(user ?.avatar ?.url ? user.avatar.url : "")
+                                            setAvatarPreview(user.avatar && user.avatar.url ? user.avatar.url : "")
 
                                         }}>Cancel</button>
                                     </>
@@ -106,13 +105,13 @@ function Profile() {
                                 <h3>Name:</h3>
                                 <input type="text" disabled={!isEdit} value={name} onChange={e => setName(e.target.value)} />
                                 <br />
-                                {errors ?.name ? <small style={{ color: "red" }}>{errors.name}</small> : null  }
+                                {errors && errors.name ? <small style={{ color: "red" }}>{errors.name}</small> : null}
                             </div>
                             <div>
                                 <h3>Email:</h3>
                                 <input type="email" disabled={!isEdit} value={email} onChange={e => setEmail(e.target.value)} />
                                 <br />
-                                {errors ?.email ? <small style={{ color: "red" }}>{errors.email}</small> : null  }
+                                {errors && errors.email ? <small style={{ color: "red" }}>{errors.email}</small> : null}
                             </div>
                             <div>
                                 <h3>Role:</h3>

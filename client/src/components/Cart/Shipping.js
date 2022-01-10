@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { saveShippingInfo } from "../../config/redux/actions/cartActions"
 import { Country, State } from "country-state-city"
-import CircularProgress from '@material-ui/core/CircularProgress'
 import "./Shipping.css"
 import CheckoutSteps from "./CheckoutSteps"
 import { useNavigate } from "react-router-dom"
@@ -17,7 +16,6 @@ function Shipping() {
     const [country, setCountry] = useState(shippingInfo.country)
     const [pinCode, setPinCode] = useState(shippingInfo.pinCode)
     const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo)
-    const [loading, setLoading] = useState(false)
     const [error, setError] = useState()
 
 
@@ -59,7 +57,7 @@ function Shipping() {
                     }
                     < div >
                         <h3>Country:</h3>
-                        <select disabled={loading} style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} value={country} required onChange={e => setCountry(e.target.value)}>
+                        <select style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} value={country} required onChange={e => setCountry(e.target.value)}>
                             <option value="">Country</option>
 
                             {
@@ -72,7 +70,7 @@ function Shipping() {
 
                     {country && (< div >
                         <h3>State:</h3>
-                        <select disabled={loading} style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} value={state} required onChange={e => setState(e.target.value)}>
+                        <select style={{ width: "250px", padding: "7px", fontSize: "15px", border: "1px solid black", outline: "none", marginBottom: "10px" }} value={state} required onChange={e => setState(e.target.value)}>
                             <option value="">State</option>
 
                             {

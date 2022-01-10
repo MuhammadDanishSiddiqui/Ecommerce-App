@@ -15,9 +15,9 @@ function ForgotPassword() {
 
     useEffect(() => {
         if (isAuth) {
-            navigate(localStorage.getItem("currentPath") == "/password/forgot" ? "/profile" : localStorage.getItem("currentPath"))
+            navigate(localStorage.getItem("currentPath") === "/password/forgot" ? "/profile" : localStorage.getItem("currentPath"))
         }
-    }, [isAuth])
+    }, [isAuth, navigate])
 
     async function forgotPassword() {
         if (!email) {
@@ -40,8 +40,8 @@ function ForgotPassword() {
             setError(null)
         } catch (error) {
             setLoading(false)
-            if (error ?.response ?.data ?.error) {
-                setError(error ?.response ?.data ?.error)
+            if (error.response && error.response.data && error.response.data.error) {
+                setError(error.response.data.error)
             }
             console.log(error)
         }

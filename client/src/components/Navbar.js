@@ -13,14 +13,10 @@ import axios from "axios"
 import { useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
-    // root: {
-    //     flexGrow: 1,
-    // },
     menuButton: {
         marginRight: theme.spacing(2),
     },
     title: {
-        // flexGrow: 1,
         fontSize: "30px",
         fontStyle: "oblique"
     },
@@ -69,7 +65,7 @@ export default function ButtonAppBar() {
                         <Button component={Link} to="/products" color="inherit">Products</Button>
                         <Button component={Link} to="/search" color="inherit">Search</Button>
                         {isAuth ? <Button component={Link} to="/cart" color="inherit">Cart</Button> : <Button component={Link} to="/register" color="inherit">Sign Up</Button>}
-                        {isAuth ? <img aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer" }} src={user.avatar && !user.avatar.url ? pic : user.avatar.url} /> : <Button component={Link} to="/login" color="inherit">Login</Button>}
+                        {isAuth ? <img alt="avatar" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{ width: "40px", height: "40px", borderRadius: "50%", cursor: "pointer" }} src={user.avatar && !user.avatar.url ? pic : user.avatar.url} /> : <Button component={Link} to="/login" color="inherit">Login</Button>}
 
                     </div>
 
@@ -83,7 +79,7 @@ export default function ButtonAppBar() {
                 onClose={handleClose}
             >
                 <MenuItem component={Link} to="/profile" onClick={handleClose}>Profile</MenuItem>
-                {user.role == "admin" && <MenuItem component={Link} to="/admin/dashboard" onClick={handleClose}>Dashboard</MenuItem>}
+                {user.role === "admin" && <MenuItem component={Link} to="/admin/dashboard" onClick={handleClose}>Dashboard</MenuItem>}
                 <MenuItem component={Link} to="/orders" onClick={handleClose}>My Orders</MenuItem>
                 <MenuItem component={Link} to="/password/update" onClick={handleClose}>Change Password</MenuItem>
                 <MenuItem onClick={async () => {

@@ -19,9 +19,9 @@ function ResetPassword() {
 
     useEffect(() => {
         if (isAuth) {
-            navigate(localStorage.getItem("currentPath") == "/password/reset/" + token ? "/profile" : localStorage.getItem("currentPath"))
+            navigate(localStorage.getItem("currentPath") === "/password/reset/" + token ? "/profile" : localStorage.getItem("currentPath"))
         }
-    }, [isAuth])
+    }, [isAuth, navigate])
 
 
     async function resetPassword() {
@@ -42,11 +42,11 @@ function ResetPassword() {
             navigate("/login")
         } catch (error) {
             setLoading(false)
-            if (error ?.response ?.data ?.errors ?.password ?.message) {
-                setError(error ?.response ?.data ?.errors ?.password ?.message)
+            if (error && error.response && error.response.data && error.response.data.errors && error.response.data.errors.password && error.response.data.errors.password.message) {
+                setError(error.response.data.errors.password.message)
             }
-            if (error ?.response ?.data ?.error) {
-                setError(error ?.response ?.data ?.error)
+            if (error && error.response && error.response.data && error.response.data.error) {
+                setError(error.response.data.error)
             }
             console.log(error)
         }

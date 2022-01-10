@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import React from 'react'
+import { useSelector } from "react-redux"
 import "./Shipping.css"
 import CheckoutSteps from "./CheckoutSteps"
 import { Link, useNavigate } from "react-router-dom"

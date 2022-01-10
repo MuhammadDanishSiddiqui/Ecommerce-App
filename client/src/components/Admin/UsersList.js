@@ -9,10 +9,8 @@ import EditIcon from "@material-ui/icons/Edit"
 import DeleteIcon from "@material-ui/icons/Delete"
 import Sidebar from "./Sidebar"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
 
 function UserList() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { error, users } = useSelector(state => state.allUsers)
     const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +29,7 @@ function UserList() {
         }
         dispatch(getAllUsers())
 
-    }, [dispatch, alert, error])
+    }, [dispatch, error])
     const columns = [
         {
             field: "id", headerName: "User ID", minWidth: 180, flex: 0.8
@@ -45,7 +43,7 @@ function UserList() {
         {
             field: "role", headerName: "Role", type: "number", minWidth: 150, flex: 0.3,
             cellClassName: params => {
-                return params.getValue(params.id, "role") == "admin" ? "greenColor" : "redColor"
+                return params.getValue(params.id, "role") === "admin" ? "greenColor" : "redColor"
             }
         },
         {

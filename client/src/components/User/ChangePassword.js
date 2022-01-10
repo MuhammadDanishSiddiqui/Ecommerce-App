@@ -29,11 +29,11 @@ function ChangePassword() {
             navigate("/profile")
         } catch (error) {
             setLoading(false)
-            if (error ?.response ?.data ?.errors ?.password ?.message) {
-                setError(error ?.response ?.data ?.errors ?.password ?.message)
+            if (error.response && error.response.data.errors && error.response.data.errors.password.message) {
+                setError(error.response.data.errors.password.message)
             }
-            if (error ?.response ?.data ?.error) {
-                setError(error ?.response ?.data ?.error)
+            if (error.response && error.response.data && error.response.data.error) {
+                setError(error.response.data.error)
             }
             console.log(error)
         }

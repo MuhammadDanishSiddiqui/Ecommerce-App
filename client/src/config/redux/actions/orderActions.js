@@ -13,6 +13,9 @@ const createOrder = (order) => async (dispatch) => {
 
 
     } catch (error) {
+        if (!error.response) {
+            return dispatch({ type: "CREATE_ORDER_FAIL", payload: "No Internet Connection." })
+        }
         dispatch({ type: "CREATE_ORDER_FAIL", payload: error.response.data.message })
     }
 }
@@ -25,6 +28,9 @@ const myOrders = () => async (dispatch) => {
 
 
     } catch (error) {
+        if (!error.response) {
+            return dispatch({ type: "MY_ORDERS_FAIL", payload: "No Internet Connection." })
+        }
         dispatch({ type: "MY_ORDERS_FAIL", payload: error.response.data.message })
     }
 }
@@ -37,6 +43,9 @@ const getAllOrders = () => async (dispatch) => {
 
 
     } catch (error) {
+        if (!error.response) {
+            return dispatch({ type: "ALL_ORDERS_FAIL", payload: "No Internet Connection." })
+        }
         dispatch({ type: "ALL_ORDERS_FAIL", payload: error.response.data.message })
     }
 }
@@ -49,6 +58,9 @@ const getOrderDetails = (id) => async (dispatch) => {
 
 
     } catch (error) {
+        if (!error.response) {
+            return dispatch({ type: "ORDER_DETAILS_FAIL", payload: "No Internet Connection." })
+        }
         dispatch({ type: "ORDER_DETAILS_FAIL", payload: error.response.data })
     }
 }
