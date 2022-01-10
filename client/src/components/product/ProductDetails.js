@@ -246,7 +246,7 @@ function ProductDetails() {
                     <Dialog aria-labelledby="simple-dialog-title" open={open} onClose={submitReviewTogg} >
                         <DialogTitle>Submit Review</DialogTitle>
                         <DialogContent className="submitDialog">
-                            <Rating onChange={(e, val) => setRatings(Number(val))} value={rating} />
+                            <Rating onChange={(e, val) => setRatings(val)} value={rating} />
                             <textarea className="submitDialogTextArea" cols="30" rows="5" value={comment} onChange={e => setComment(e.target.value)}>
 
                             </textarea>
