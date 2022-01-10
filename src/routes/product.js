@@ -10,30 +10,29 @@ const cloudinary = require("cloudinary")
 
 
 router.post("/admin/product", auth, authRoles, async (req, res) => {
-    let images = []
-    if (typeof req.body.images == "string") {
-        images.push(req.body.images)
-    }
-    else {
-        images = req.body.images
-    }
-
-    const imagesLink = []
-
-    for (let i = 0; i < images.length; i++) {
-        const result = await cloudinary.v2.uploader.upload(images[i], {
-            folder: "products"
-        })
-        imagesLink.push({
-            public_id: result.public_id,
-            url: result.secure_url
-        })
-
-    }
-
-    req.body.images = imagesLink
-
     try {
+        let images = []
+        if (typeof req.body.images == "string") {
+            images.push(req.body.images)
+        }
+        else {
+            images = req.body.images
+        }
+
+        const imagesLink = []
+
+        for (let i = 0; i < images.length; i++) {
+            const result = await cloudinary.v2.uploader.upload(images[i], {
+                folder: "products"
+            })
+            imagesLink.push({
+                public_id: result.public_id,
+                url: result.secure_url
+            })
+
+        }
+
+        req.body.images = imagesLink
         const product = new Product({ ...req.body, user: req.user._id })
         await product.save()
         res.status(201).send({ message: "Product added successfully", product })
@@ -43,14 +42,13 @@ router.post("/admin/product", auth, authRoles, async (req, res) => {
 })
 
 router.patch("/admin/product/:id", auth, authRoles, async (req, res) => {
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ["name", "description", "price", "category", "images", "stock"]
-    const isValidUpdates = updates.every((update) => allowedUpdates.includes(update))
-    if (!isValidUpdates) {
-        return res.status(400).send({ error: "Invalid updates" })
-    }
-
     try {
+        const updates = Object.keys(req.body)
+        const allowedUpdates = ["name", "description", "price", "category", "images", "stock"]
+        const isValidUpdates = updates.every((update) => allowedUpdates.includes(update))
+        if (!isValidUpdates) {
+            return res.status(400).send({ error: "Invalid updates" })
+        }
         const product = await Product.findOne({ _id: req.params.id })
         if (!product) {
             return res.status(404).send({ error: "Product not found" })
