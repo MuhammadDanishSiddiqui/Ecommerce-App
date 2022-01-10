@@ -76,7 +76,7 @@ function Products() {
 
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography style={{ marginRight: "10px" }}>Ratings</Typography>
-                    <Rating {...options} onChange={e => setRatings(Number(e.target.value))} />
+                    <Rating {...options} onChange={(e, val) => setRatings(Number(val))} />
                 </div>
 
             </div>
