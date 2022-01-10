@@ -193,13 +193,19 @@ router.patch("/review", auth, async (req, res) => {
         }
         else {
             product && product.reviews && product.reviews.push(review)
-            product.numOfReviews = product.reviews.length
         }
+        product.numOfReviews = product.reviews.length
         let avg = 0
-        product && product.reviews && product.reviews.forEach(rev => {
+        product && product.reviews[0] && product.reviews.forEach(rev => {
             avg += rev.rating
         })
-        product.ratings = avg / product && product.reviews && product.reviews.length
+        if (product.reviews.length != 0) {
+            product.ratings = avg / product && product.reviews && product.reviews.length
+        }
+        else {
+            product.ratings = 0
+        }
+
         await product.save()
         res.send({ message: "Review added successfully", product })
     } catch (error) {
