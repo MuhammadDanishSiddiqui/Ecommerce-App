@@ -11,7 +11,7 @@ import { Link } from "react-router-dom"
 function MyOrders() {
     const dispatch = useDispatch()
     const { loading, error, orders } = useSelector(state => state.myOrders)
-    const { user, isAuth } = useSelector(state => state.user)
+    const { user, isAuth, loading: userLoading } = useSelector(state => state.user)
 
     useEffect(() => {
         if (error) {
@@ -60,7 +60,7 @@ function MyOrders() {
     return (
         <>
             {
-                loading || isAuth === false ?
+                loading || userLoading ?
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh", width: "100%" }}>
                         <CircularProgress />
                     </div>

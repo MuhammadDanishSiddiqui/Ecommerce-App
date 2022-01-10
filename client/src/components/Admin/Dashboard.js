@@ -16,6 +16,12 @@ function Dashboard() {
     const { users } = useSelector(state => state.allUsers)
 
     useEffect(() => {
+        dispatch(getAdminProducts())
+        dispatch(getAllOrders())
+        dispatch(getAllUsers())
+    }, [])
+
+    useEffect(() => {
         if (error) {
             if (error.error) {
                 alert(error.error)
@@ -27,10 +33,6 @@ function Dashboard() {
             }
 
         }
-        dispatch(getAdminProducts())
-        dispatch(getAllOrders())
-        dispatch(getAllUsers())
-
     }, [dispatch, error])
 
     let outOfStock = 0

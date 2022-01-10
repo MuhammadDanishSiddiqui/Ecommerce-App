@@ -34,7 +34,7 @@ function UpdateProduct() {
 
     useEffect(() => {
         dispatch(getProductDetail(id))
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         if (product) {
@@ -45,7 +45,7 @@ function UpdateProduct() {
             setStock(product.stock)
             setOldImages(product.images)
         }
-    }, [id, product])
+    }, [product])
 
     const updateProductSubmitHandler = async (e) => {
         setUpdateError(null)

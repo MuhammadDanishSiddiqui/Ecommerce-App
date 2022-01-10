@@ -28,17 +28,15 @@ function NewProduct() {
     const categories = ["mobile", "laptop", "furniture", "footware", "camera"]
 
     useEffect(() => {
-        if (error) {
-            dispatch(clearErrors())
-        }
         if (message) {
             alert(message)
             dispatch({ type: "NEW_PRODUCT_RESET" })
-            navigate("/admin/dashboard")
+            navigate("/admin/products")
         }
-    }, [dispatch, message, navigate, error])
+    }, [message, navigate])
 
     const createProductSubmitHandler = (e) => {
+        dispatch(clearErrors())
         e.preventDefault()
         const myform = new FormData()
         myform.append("name", name)

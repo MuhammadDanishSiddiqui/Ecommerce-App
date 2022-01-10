@@ -5,7 +5,6 @@ import { getProducts } from "../../config/redux/actions/productAction"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ToastContainer, toast } from 'react-toastify';
 import "./Products.css"
 import { useParams } from "react-router-dom"
 import Pagination from "react-js-pagination"
@@ -33,13 +32,14 @@ function Products() {
 
     const { products, loading, error, resultPerPage, filteredProductsCount } = useSelector(state => state.products)
     useEffect(() => {
-        if (error) {
-            toast.error(error.message, {
-                position: "top-center"
-            })
-        }
         dispatch(getProducts(keyword, currentPage, price, category, ratings))
-    }, [dispatch, error, keyword, currentPage, price, category, ratings])
+    }, [dispatch, keyword, currentPage, price, category, ratings])
+
+    useEffect(() => {
+        if (error) {
+            alert(error.message)
+        }
+    }, [error])
 
     let count = filteredProductsCount
     const options = {

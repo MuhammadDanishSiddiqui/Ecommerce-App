@@ -9,13 +9,16 @@ import EditIcon from "@material-ui/icons/Edit"
 import DeleteIcon from "@material-ui/icons/Delete"
 import Sidebar from "./Sidebar"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function ProductList() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { error, products } = useSelector(state => state.adminProducts)
+    const { error, products, loading } = useSelector(state => state.adminProducts)
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        dispatch(getAdminProducts())
+    }, [])
 
     useEffect(() => {
         if (error) {
@@ -29,8 +32,6 @@ function ProductList() {
             }
 
         }
-        dispatch(getAdminProducts())
-
     }, [dispatch, error])
     const columns = [
         {
@@ -76,7 +77,7 @@ function ProductList() {
             })
             setIsLoading(false)
             alert(data.message)
-            navigate("/admin/dashboard")
+            dispatch(getAdminProducts())
 
         } catch (error) {
             setIsLoading(false)
@@ -96,12 +97,16 @@ function ProductList() {
                 <Sidebar />
                 <div className="productListContainer">
                     {
-                        products && products[0] ? <>
-                            <h1 id="productListHeading">All Products</h1>
-                            <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight /></> : <h3 style={{
-                                margin: "90px",
-                                textAlign: "center"
-                            }}>No Product Found</h3>
+                        loading ? <div style={{
+                            margin: "90px",
+                            textAlign: "center"
+                        }}><CircularProgress /></div> :
+                            products && products[0] ? <>
+                                <h1 id="productListHeading">All Products</h1>
+                                <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight /></> : <h3 style={{
+                                    margin: "90px",
+                                    textAlign: "center"
+                                }}>No Product Found</h3>
                     }
                 </div>
             </div>

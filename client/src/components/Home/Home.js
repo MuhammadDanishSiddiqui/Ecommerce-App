@@ -7,19 +7,20 @@ import { getProducts, clearErrors } from "../../config/redux/actions/productActi
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ToastContainer, toast } from 'react-toastify';
 
 function Home() {
     const dispatch = useDispatch()
     const { products, loading, error } = useSelector(state => state.products)
+
+    useEffect(() => {
+        dispatch(getProducts())
+    }, [])
+
     useEffect(() => {
         if (error) {
-            toast.error(error.message, {
-                position: "top-center"
-            })
+            alert(error.message)
             dispatch(clearErrors())
         }
-        dispatch(getProducts())
     }, [dispatch, error])
 
     return (

@@ -12,9 +12,20 @@ function UpdateOrder() {
     const { id } = useParams()
     const dispatch = useDispatch()
     const { order, error, loading } = useSelector(state => state.orderDetails)
-    const { isAuth } = useSelector(state => state.user)
     const [isLoading, setIsLoading] = useState(false)
     const [updateError, setUpdateError] = useState()
+
+    useEffect(() => {
+        dispatch(getOrderDetails(id))
+    }, [])
+
+
+    useEffect(() => {
+        if (error) {
+            alert(error.error)
+            dispatch(clearErrors())
+        }
+    }, [dispatch, error])
 
     async function processOrder(e) {
 
@@ -41,14 +52,7 @@ function UpdateOrder() {
         }
     }
 
-    useEffect(() => {
-        if (error) {
-            alert(error.error)
-            dispatch(clearErrors())
-        }
-        if (isAuth)
-            dispatch(getOrderDetails(id))
-    }, [dispatch, error, isAuth, id])
+
 
     return (
         <>

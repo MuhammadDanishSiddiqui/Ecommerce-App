@@ -43,7 +43,6 @@ function ForgotPassword() {
             if (error.response && error.response.data && error.response.data.error) {
                 setError(error.response.data.error)
             }
-            console.log(error)
         }
     }
 

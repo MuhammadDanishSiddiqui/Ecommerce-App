@@ -9,11 +9,16 @@ import EditIcon from "@material-ui/icons/Edit"
 import DeleteIcon from "@material-ui/icons/Delete"
 import Sidebar from "./Sidebar"
 import axios from "axios"
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function OrderList() {
     const dispatch = useDispatch()
-    const { error, orders } = useSelector(state => state.allOrders)
+    const { error, orders, loading } = useSelector(state => state.allOrders)
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        dispatch(getAllOrders())
+    }, [])
 
     useEffect(() => {
         if (error) {
@@ -27,8 +32,6 @@ function OrderList() {
             }
 
         }
-        dispatch(getAllOrders())
-
     }, [dispatch, error])
     const columns = [
         { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
@@ -94,12 +97,16 @@ function OrderList() {
                 <Sidebar />
                 <div className="productListContainer">
                     {
-                        orders && orders[0] ? <>
-                            <h1 id="productListHeading">All Orders</h1>
-                            <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight /></> : <h3 style={{
-                                margin: "90px",
-                                textAlign: "center"
-                            }}>No Order Found</h3>
+                        loading ? <div style={{
+                            margin: "90px",
+                            textAlign: "center"
+                        }}><CircularProgress /></div> :
+                            orders && orders[0] ? <>
+                                <h1 id="productListHeading">All Orders</h1>
+                                <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight /></> : <h3 style={{
+                                    margin: "90px",
+                                    textAlign: "center"
+                                }}>No Order Found</h3>
                     }
                 </div>
             </div>

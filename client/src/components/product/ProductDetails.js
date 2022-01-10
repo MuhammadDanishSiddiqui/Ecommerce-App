@@ -136,6 +136,11 @@ function ProductDetails() {
     const { message, error: reviewError } = useSelector(state => state.newReview)
 
     let { id } = useParams()
+
+    useEffect(() => {
+        dispatch(getProductDetail(id))
+    }, [])
+
     useEffect(() => {
         if (error) {
             if (error.error) {
@@ -144,11 +149,11 @@ function ProductDetails() {
             else {
                 alert(error.message)
             }
+            dispatch(clearErrors())
 
         }
-        dispatch(getProductDetail(id))
-    }, [dispatch, id, error])
 
+    }, [id, error])
     useEffect(() => {
         if (reviewError) {
             alert(reviewError)

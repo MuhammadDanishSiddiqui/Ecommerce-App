@@ -9,11 +9,16 @@ import EditIcon from "@material-ui/icons/Edit"
 import DeleteIcon from "@material-ui/icons/Delete"
 import Sidebar from "./Sidebar"
 import axios from "axios"
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function UserList() {
     const dispatch = useDispatch()
-    const { error, users } = useSelector(state => state.allUsers)
+    const { error, users, loading } = useSelector(state => state.allUsers)
     const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        dispatch(getAllUsers())
+    }, [])
 
     useEffect(() => {
         if (error) {
@@ -27,8 +32,6 @@ function UserList() {
             }
 
         }
-        dispatch(getAllUsers())
-
     }, [dispatch, error])
     const columns = [
         {
@@ -80,7 +83,6 @@ function UserList() {
             dispatch(getAllUsers())
 
         } catch (error) {
-            console.log(error)
             setIsLoading(false)
             if (error.error) {
                 alert(error.error)
@@ -97,8 +99,19 @@ function UserList() {
             <div className="dashboard">
                 <Sidebar />
                 <div className="productListContainer">
-                    <h1 id="productListHeading">All Users</h1>
-                    <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight />
+                    {
+                        loading ? <div style={{
+                            margin: "90px",
+                            textAlign: "center"
+                        }}><CircularProgress /></div> : users && users[0] ? <>
+                            <h1 id="productListHeading">All Users</h1>
+                            <DataGrid rows={rows} columns={columns} pageSize={10} disableSelectionOnClick className="productListTable" autoHeight />
+                        </> : <h3 style={{
+                            margin: "90px",
+                            textAlign: "center"
+                        }}>No User Found</h3>
+                    }
+
                 </div>
             </div>
         </>

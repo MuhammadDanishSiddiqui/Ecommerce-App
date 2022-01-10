@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom"
 function OrderDetails() {
     const { id } = useParams()
     const { order, error, loading } = useSelector(state => state.orderDetails)
-    const { isAuth } = useSelector(state => state.user)
+    const { isAuth, loading: userLoading } = useSelector(state => state.user)
     const dispatch = useDispatch()
     useEffect(() => {
         if (error) {
@@ -22,7 +22,7 @@ function OrderDetails() {
     return (
         <>
             {
-                loading ?
+                loading || userLoading ?
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh", width: "100%" }}>
                         <CircularProgress />
                     </div> : <>

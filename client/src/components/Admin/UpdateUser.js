@@ -26,6 +26,17 @@ function UpdateUser() {
 
     useEffect(() => {
         dispatch(getUserDetail(id))
+    }, [])
+
+    useEffect(() => {
+        if (user) {
+            setName(user.name)
+            setEmail(user.email)
+            setRole(user.role)
+        }
+    }, [user])
+
+    useEffect(() => {
         if (error) {
             if (error.error) {
                 alert(error.error)
@@ -38,13 +49,6 @@ function UpdateUser() {
 
     }, [dispatch, id, error])
 
-    useEffect(() => {
-        if (user) {
-            setName(user.name)
-            setEmail(user.email)
-            setRole(user.role)
-        }
-    }, [user])
 
     const updateUserSubmitHandler = async (e) => {
         e.preventDefault()
