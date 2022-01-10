@@ -196,14 +196,11 @@ router.patch("/review", auth, async (req, res) => {
         }
         product.numOfReviews = product.reviews.length
         let avg = 0
-        product && product.reviews[0] && product.reviews.forEach(rev => {
+        product && product.reviews && product.reviews.forEach(rev => {
             avg += rev.rating
         })
         if (product.reviews.length != 0) {
-            product.ratings = avg / product && product.reviews && product.reviews.length
-        }
-        else {
-            product.ratings = 0
+            product.ratings = avg / product.reviews.length
         }
 
         await product.save()

@@ -10,7 +10,7 @@ if (localStorage.getItem("token")) {
   axios.defaults.headers.common['Authorization'] = "Bearer " + localStorage.getItem("token")
 }
 
-// axios.defaults.baseURL = `https://ecommerce-mern-stack-app.herokuapp.com`
+axios.defaults.baseURL = `https://ecommerce-mern-stack-app.herokuapp.com`
 
 
 function App() {

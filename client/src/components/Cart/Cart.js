@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "20px",
         [theme.breakpoints.down("xs")]: {
             flexDirection: "column",
-            height: "300px"
         }
     },
     plus_minus: {

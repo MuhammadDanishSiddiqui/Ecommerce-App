@@ -41,7 +41,8 @@
     align-items: center;
     justify-content: center;
     width:100%; 
-    margin-top: 20px
+    margin-top: 20px;
+    height: auto
 }
 .confirmCartItemsContainer > div {
     width: 100%;
@@ -98,8 +99,6 @@
    
         margin-bottom: 10px;
         flex-direction: column;
-   
-        height: 150px
     }
     .confirmCartItemsContainer > div > img {
         width: 140px

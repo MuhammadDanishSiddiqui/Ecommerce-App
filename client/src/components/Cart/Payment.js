@@ -85,6 +85,9 @@ function Payment() {
                         status: result.paymentIntent.status
                     }
                     dispatch(createOrder(order))
+                    localStorage.removeItem("cartItems")
+                    sessionStorage.removeItem("orderInfo")
+                    localStorage.removeItem("shippingInfo")
                     navigate("/success")
                 }
                 else {

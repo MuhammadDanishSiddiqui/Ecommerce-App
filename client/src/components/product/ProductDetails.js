@@ -188,6 +188,14 @@ function ProductDetails() {
         setOpen(false)
     }
 
+    const ratingChangeHandler = (value) => {
+        setRatings(value)
+    }
+
+    const commentChangeHandler = (value) => {
+        setComment(value)
+    }
+
     return (
         <>
             {loading || isLoading ? <div style={{ width: "100%", height: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -246,8 +254,8 @@ function ProductDetails() {
                     <Dialog aria-labelledby="simple-dialog-title" open={open} onClose={submitReviewTogg} >
                         <DialogTitle>Submit Review</DialogTitle>
                         <DialogContent className="submitDialog">
-                            <Rating onChange={(e, val) => setRatings(val)} value={rating} />
-                            <textarea className="submitDialogTextArea" cols="30" rows="5" value={comment} onChange={e => setComment(e.target.value)}>
+                            <Rating onChange={(e, val) => ratingChangeHandler(val)} value={rating} />
+                            <textarea className="submitDialogTextArea" cols="30" rows="5" value={comment} onChange={e => commentChangeHandler(e.target.value)}>
 
                             </textarea>
                         </DialogContent>
