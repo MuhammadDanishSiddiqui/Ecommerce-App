@@ -29,6 +29,8 @@ function NewProduct() {
 
     useEffect(() => {
         if (error) {
+            console.log("cala")
+            console.log(error.message)
             dispatch(clearErrors())
         }
         if (message) {

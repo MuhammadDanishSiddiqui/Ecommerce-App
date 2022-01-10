@@ -23,7 +23,7 @@ router.post("/user/register", async (req, res) => {
         if (user) {
             return res.status(400).send({ error: "user already exit" })
         }
-        const newUser = new User({ ...req.body, avatar: { public_id: myCloud ?.public_id, url: myCloud ?.secure_url } })
+        const newUser = new User({ ...req.body, avatar: { public_id: myCloud && myCloud.public_id, url: myCloud && myCloud.secure_url } })
         await newUser.save()
         res.status(201).send({ message: "Registered successfully", user: newUser })
     } catch (error) {
@@ -65,21 +65,26 @@ router.post("/user/logoutAll", auth, async (req, res) => {
 })
 
 router.get("/user/me", auth, (req, res) => {
-    res.send({ user: req.user })
+    try {
+        res.send({ user: req.user })
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
 router.patch("/user/me", auth, async (req, res) => {
     try {
         let myCloud
         if (req.body.avatar) {
-            await cloudinary.v2.uploader.destroy(req ?.user ?.avatar ?.public_id)
+            await cloudinary.v2.uploader.destroy(req.user.avatar && req.user.avatar.public_id)
             myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
                 folder: "avatars",
                 width: 150,
                 crop: "scale"
             })
         }
-        const upatedUser = await User.findByIdAndUpdate(req.user._id, { ...req.body, avatar: { public_id: myCloud ?.public_id, url: myCloud ?.secure_url } }, { new: true, runValidators: true })
+        const upatedUser = await User.findByIdAndUpdate(req.user._id, { ...req.body, avatar: { public_id: myCloud && myCloud.public_id, url: myCloud && myCloud.secure_url } }, { new: true, runValidators: true })
         res.send({ message: "Profile updated successfully", user: upatedUser })
     } catch (error) {
         res.status(400).send(error)
@@ -148,7 +153,7 @@ router.patch("/admin/user/:id", auth, authRoles, async (req, res) => {
         await upatedUser.save()
         res.send({ message: "User updated successfully", user: upatedUser })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(400).send(error)
     }
 })
 
@@ -158,7 +163,7 @@ router.delete("/admin/user/:id", auth, authRoles, async (req, res) => {
         if (!user) {
             return res.status(404).send({ error: "user not found" })
         }
-        if (user.avatar ?.public_id) {
+        if (user.avatar && user.avatar.public_id) {
             const imageId = user.avatar.public_id
             await cloudinary.v2.uploader.destroy(imageId)
         }

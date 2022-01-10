@@ -57,7 +57,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex")
-
     this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex")
     this.resetPasswordExpire = Date.now() + 15 * 60 * 1000
     return resetToken
@@ -72,23 +71,31 @@ userSchema.methods.toJSON = function () {
 }
 
 userSchema.methods.generateAuthToken = async function () {
-    const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.SECRET_KEY)
-    user.tokens = user.tokens.concat({ token })
-    await user.save()
-    return token
+    try {
+        const user = this
+        const token = jwt.sign({ _id: user._id.toString() }, process.env.SECRET_KEY)
+        user.tokens = user.tokens.concat({ token })
+        await user.save()
+        return token
+    } catch (error) {
+        resizeBy.status(500).send(error)
+    }
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email })
-    if (!user) {
-        throw new Error("Invalid Credentials.")
+    try {
+        const user = await User.findOne({ email })
+        if (!user) {
+            throw new Error("Invalid Credentials.")
+        }
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            throw new Error("Invalid Credentials.")
+        }
+        return user
+    } catch (error) {
+        console.log(error)
     }
-    const isMatch = await bcrypt.compare(password, user.password)
-    if (!isMatch) {
-        throw new Error("Invalid Credentials.")
-    }
-    return user
 }
 
 

@@ -158,65 +158,77 @@ router.get("/admin/products", auth, authRoles, async (req, res) => {
 })
 
 router.get("/reviews", async (req, res) => {
-    const product = await Product.findById(req.query.id)
-    if (!product) {
-        return res.status(404).send({ error: "Product not found" })
+    try {
+        const product = await Product.findById(req.query.id)
+        if (!product) {
+            return res.status(404).send({ error: "Product not found" })
+        }
+        res.send({ reviews: product.reviews })
+    } catch (error) {
+        res.status(500).send(error)
     }
-    res.send({ reviews: product.reviews })
 })
 
 
 router.patch("/review", auth, async (req, res) => {
-    const { rating, comment, productId } = req.body;
-    const review = {
-        user: req.user._id,
-        name: req.user.name,
-        rating: Number(rating),
-        comment
-    }
-    const product = await Product.findById(productId)
-    const isReviewed = product ?.reviews ?.find(rev => rev ?.user ?.toString() == req ?.user ?._id.toString())
-    if (isReviewed) {
-        product ?.reviews ?.forEach(rev => {
-            if (rev ?.user ?.toString() == req.user._id.toString()) {
-                rev.rating = rating
-                rev.comment = comment
-            }
+    try {
+        const { rating, comment, productId } = req.body;
+        const review = {
+            user: req.user._id,
+            name: req.user.name,
+            rating: Number(rating),
+            comment
+        }
+        const product = await Product.findById(productId)
+        const isReviewed = product.reviews && product.reviews.find(rev => rev.user && rev.user.toString() == req.user && req.user._id.toString())
+        if (isReviewed) {
+            product.reviews && product.reviews.forEach(rev => {
+                if (rev.user && rev.user.toString() == req.user._id.toString()) {
+                    rev.rating = rating
+                    rev.comment = comment
+                }
+            })
+        }
+        else {
+            product && product.reviews && product.reviews.push(review)
+            product.numOfReviews = product.reviews.length
+        }
+        let avg = 0
+        product && product.reviews && product.reviews.forEach(rev => {
+            avg += rev.rating
         })
+        product.ratings = avg / product && product.reviews && product.reviews.length
+        await product.save()
+        res.send({ message: "Review added successfully", product })
+    } catch (error) {
+        res.status(500).send(error)
     }
-    else {
-        product ?.reviews ?.push(review)
-        product.numOfReviews = product.reviews.length
-    }
-    let avg = 0
-    product ?.reviews ?.forEach(rev => {
-        avg += rev.rating
-    })
-    product.ratings = avg / product ?.reviews ?.length
-    await product.save()
-    res.send({ message: "Review added successfully", product })
 })
 
 router.delete("/review", auth, async (req, res) => {
-    const product = await Product.findById(req.query.productId)
-    if (!product) {
-        return res.status(404).send({ error: "Product not found." })
-    }
-    const reviews = product ?.reviews ?.filter(rev => rev._id.toString() !== req.query.id.toString())
-    let avg = 0
-    reviews.forEach(rev => {
-        avg += rev.rating
-    })
-    let ratings = 0
-    if (reviews.length == 0) {
-        ratings = 0
-    } else {
-        ratings = avg / reviews.length
-    }
+    try {
+        const product = await Product.findById(req.query.productId)
+        if (!product) {
+            return res.status(404).send({ error: "Product not found." })
+        }
+        const reviews = product && product.reviews && product.reviews.filter(rev => rev._id.toString() !== req.query.id.toString())
+        let avg = 0
+        reviews.forEach(rev => {
+            avg += rev.rating
+        })
+        let ratings = 0
+        if (reviews.length == 0) {
+            ratings = 0
+        } else {
+            ratings = avg / reviews.length
+        }
 
-    const numOfReviews = reviews.length
-    await Product.findByIdAndUpdate(req.query.productId, { reviews, ratings, numOfReviews }, { new: true })
-    res.send({ message: "Review deleted successfully" })
+        const numOfReviews = reviews.length
+        await Product.findByIdAndUpdate(req.query.productId, { reviews, ratings, numOfReviews }, { new: true })
+        res.send({ message: "Review deleted successfully" })
+    } catch (error) {
+        res.status(500).send(error)
+    }
 
 })
 
