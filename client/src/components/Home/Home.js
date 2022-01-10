@@ -40,7 +40,6 @@ function Home() {
                         return <Product key={product._id} product={product} />
                     }) : <h4>No Product Found</h4>}
                 </Grid>}
-            <ToastContainer />
         </>
     )
 }

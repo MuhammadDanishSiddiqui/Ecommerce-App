@@ -103,7 +103,6 @@ function Products() {
                     activeLinkClass="pageLinkActive"
                 />
             </div>}
-            <ToastContainer />
         </>
 
     )
