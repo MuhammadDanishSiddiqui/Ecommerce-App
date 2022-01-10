@@ -23,7 +23,9 @@ router.post("/admin/product", auth, authRoles, async (req, res) => {
 
         for (let i = 0; i < images.length; i++) {
             const result = await cloudinary.v2.uploader.upload(images[i], {
-                folder: "products"
+                folder: "products",
+                width: 300,
+                height: 380
             })
             imagesLink.push({
                 public_id: result.public_id,
@@ -70,7 +72,9 @@ router.patch("/admin/product/:id", auth, authRoles, async (req, res) => {
 
             for (let i = 0; i < images.length; i++) {
                 const result = await cloudinary.v2.uploader.upload(images[i], {
-                    folder: "products"
+                    folder: "products",
+                    width: 300,
+                    height: 380
                 })
                 imagesLink.push({
                     public_id: result.public_id,
